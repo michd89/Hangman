@@ -1,5 +1,4 @@
 import pickle
-import time
 
 import pygame
 import socket
@@ -38,7 +37,7 @@ def send(data):
         print(e)
 
 
-def redraw_login_menu(host, name, entered_host, entered_name, login_error = False):
+def redraw_login_menu(host, name, entered_host, entered_name, login_error=False):
     win.fill(BACKGROUND_COLOR)
 
     font_normal = pygame.font.SysFont("courier", 20, bold=False)
