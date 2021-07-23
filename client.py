@@ -94,74 +94,78 @@ def redraw_score_board(player_data):
     pygame.draw.line(win, WHITE, (250, 0), (250, HEIGHT), 1)
 
 
-def redraw_hangman():
+def redraw_hangman(false_attempts=0):
+    def get_color(number):
+        if false_attempts >= number:
+            return WHITE
+        return INCOMPLETE_HANGMAN
+
+
     start_x = 400
     start_y = 20
     angle = 30  # In degrees
-
-    # Pole
-    len_pole = 400
-    pygame.draw.line(win, INCOMPLETE_HANGMAN, (start_x, start_y), (start_x, start_y + len_pole), 10)
-
-    # Crossbeam
-    len_crossbeam = 200
-    pygame.draw.line(win, INCOMPLETE_HANGMAN, (start_x - 4, start_y), (start_x + len_crossbeam, start_y), 10)
-
-    # Brace
+    len_pole = 350
+    len_crossbeam = 170
     distance = 75
-    pygame.draw.line(win, INCOMPLETE_HANGMAN, (start_x, start_y + distance), (start_x + distance, start_y), 10)
-
-    # Noose
     len_noose = 70
-    pygame.draw.line(win, INCOMPLETE_HANGMAN,
-                     (start_x + len_crossbeam - 4, start_y - 4),
-                     (start_x + len_crossbeam - 4, start_y + len_noose),
-                     10)
-
-    # Head
     diameter = 70
-    pygame.draw.ellipse(win, INCOMPLETE_HANGMAN,
-                        (start_x + len_crossbeam - diameter // 2 - 3, start_y + len_noose,
-                         diameter, diameter), width=10)
-
-    # Torso
     len_torso = 100
-    pygame.draw.line(win, INCOMPLETE_HANGMAN,
-                     (start_x + len_crossbeam - 4, start_y + len_noose + diameter - 4),
-                     (start_x + len_crossbeam - 4, start_y + len_noose + diameter + len_torso),
-                     10)
-
     len_arms = 80
-
-    # Left arm
-    pygame.draw.line(win, INCOMPLETE_HANGMAN,
-                     (start_x + len_crossbeam - 4, start_y + len_noose + diameter - 4 + int(len_torso * 0.4)),
-                     (start_x + len_crossbeam - 4 - len_arms * math.cos((90 + angle)),
-                      start_y + len_noose + diameter - 4 + int(len_torso * 0.4) - len_arms * math.sin(90 + angle)),
-                     10)
-
-    # Right arm
-    pygame.draw.line(win, INCOMPLETE_HANGMAN,
-                     (start_x + len_crossbeam - 4, start_y + len_noose + diameter - 4 + int(len_torso * 0.4)),
-                     (start_x + len_crossbeam - 4 + len_arms * math.cos((90 + angle)),
-                      start_y + len_noose + diameter - 4 + int(len_torso * 0.4) - len_arms * math.sin(90 + angle)),
-                     10)
-
     len_legs = 200
 
+    # Right leg
+    pygame.draw.line(win, get_color(10),
+                     (start_x + len_crossbeam - 3, start_y + len_noose + diameter - 4 + len_torso),
+                     (start_x + len_crossbeam - 3 + len_legs * math.cos((270 - angle)),
+                      start_y + len_noose + diameter - 4 + len_torso + len_arms * math.sin(270 - angle)),
+                     10)
+
     # Left leg
-    pygame.draw.line(win, INCOMPLETE_HANGMAN,
+    pygame.draw.line(win, get_color(9),
                      (start_x + len_crossbeam - 3, start_y + len_noose + diameter - 4 + len_torso),
                      (start_x + len_crossbeam - 3 - len_legs * math.cos((270 - angle)),
                       start_y + len_noose + diameter - 4 + len_torso + len_arms * math.sin(270 - angle)),
                      10)
 
-    # Right leg
-    pygame.draw.line(win, INCOMPLETE_HANGMAN,
-                     (start_x + len_crossbeam - 3, start_y + len_noose + diameter - 4 + len_torso),
-                     (start_x + len_crossbeam - 3 + len_legs * math.cos((270 - angle)),
-                      start_y + len_noose + diameter - 4 + len_torso + len_arms * math.sin(270 - angle)),
+    # Right arm
+    pygame.draw.line(win, get_color(8),
+                     (start_x + len_crossbeam - 4, start_y + len_noose + diameter - 4 + int(len_torso * 0.4)),
+                     (start_x + len_crossbeam - 4 + len_arms * math.cos((90 + angle)),
+                      start_y + len_noose + diameter - 4 + int(len_torso * 0.4) - len_arms * math.sin(90 + angle)),
                      10)
+
+    # Left arm
+    pygame.draw.line(win, get_color(7),
+                     (start_x + len_crossbeam - 4, start_y + len_noose + diameter - 4 + int(len_torso * 0.4)),
+                     (start_x + len_crossbeam - 4 - len_arms * math.cos((90 + angle)),
+                      start_y + len_noose + diameter - 4 + int(len_torso * 0.4) - len_arms * math.sin(90 + angle)),
+                     10)
+
+    # Torso
+    pygame.draw.line(win, get_color(6),
+                     (start_x + len_crossbeam - 4, start_y + len_noose + diameter - 4),
+                     (start_x + len_crossbeam - 4, start_y + len_noose + diameter + len_torso),
+                     10)
+
+    # Head
+    pygame.draw.ellipse(win, get_color(5),
+                        (start_x + len_crossbeam - diameter // 2 - 3, start_y + len_noose,
+                         diameter, diameter), width=10)
+
+    # Noose
+    pygame.draw.line(win, get_color(4),
+                     (start_x + len_crossbeam - 4, start_y),
+                     (start_x + len_crossbeam - 4, start_y + len_noose),
+                     10)
+
+    # Brace
+    pygame.draw.line(win, get_color(3), (start_x, start_y + distance), (start_x + distance, start_y), 10)
+
+    # Crossbeam
+    pygame.draw.line(win, get_color(2), (start_x - 4, start_y + 4), (start_x + len_crossbeam, start_y + 4), 10)
+
+    # Pole
+    pygame.draw.line(win, get_color(1), (start_x, start_y), (start_x, start_y + len_pole), 10)
 
 
 def redraw_game_screen(player_data):
