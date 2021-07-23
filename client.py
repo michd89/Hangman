@@ -6,8 +6,11 @@ from utils import send_msg, recv_msg, recv_game
 WIDTH = 800
 HEIGHT = 600
 WHITE = (255, 255, 255)
+DARKER_WHITE = (120, 120, 120)
 BACKGROUND_COLOR = (40, 40, 40)
 pygame.font.init()
+font_normal = pygame.font.SysFont("courier", 16, bold=False)
+font_bold = pygame.font.SysFont("courier", 16, bold=True)
 win = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Galgenraten ihr Gusten")
 
@@ -35,9 +38,6 @@ def send(client, data):
 def redraw_login_menu(host, name, entered_host, entered_name, login_error=False):
     win.fill(BACKGROUND_COLOR)
 
-    font_normal = pygame.font.SysFont("courier", 20, bold=False)
-    font_bold = pygame.font.SysFont("courier", 20, bold=True)
-
     message = f'Hostname oder IP (leer = localhost): {host}'
     if not entered_host and not entered_name:
         host = font_bold.render(message, True, WHITE)
@@ -50,8 +50,8 @@ def redraw_login_menu(host, name, entered_host, entered_name, login_error=False)
     else:
         name = font_normal.render(message, True, WHITE)
 
-    win.blit(host, (100, 250))
-    win.blit(name, (100, 280))
+    win.blit(host, (30, 250))
+    win.blit(name, (30, 280))
 
     if entered_host and entered_name:
         fertig = font_bold.render('Verbinde...', True, WHITE)
@@ -67,10 +67,36 @@ def redraw_login_menu(host, name, entered_host, entered_name, login_error=False)
         pygame.time.delay(3000)
 
 
-def redraw_game_screen():
+def redraw_game_screen(player_data):
     win.fill(BACKGROUND_COLOR)
 
-    # ...
+    # Nicklist
+    # Current design can show up to 29 players
+    y_text = 10
+    y_line = 29
+    for nickname, score in player_data:
+        test = font_bold.render(nickname, True, WHITE)
+        score_str = ''
+        if score < 100:
+            score_str += ' '
+        if score < 10:
+            score_str += ' '
+        score_str += str(score)
+
+        test2 = font_bold.render(score_str, True, WHITE)
+        win.blit(test, (5, y_text))
+        win.blit(test2, (215, y_text))
+        pygame.draw.line(win, WHITE, (0, y_line), (250, y_line), 1)
+        y_text += 20
+        y_line += 20
+
+    pygame.draw.line(win, DARKER_WHITE, (210, 0), (210, 588), 1)
+    pygame.draw.line(win, WHITE, (250, 0), (250, 589), 1)
+    pygame.draw.line(win, WHITE, (0, 589), (250, 589), 1)
+
+    # Hangman
+
+    # Letters, Menu or Solution
 
     pygame.display.update()
 
