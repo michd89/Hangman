@@ -1,9 +1,8 @@
-import pickle
 import socket
 import threading
 
 from game import Hangman
-from utils import recv_msg, send_msg
+from utils import recv_msg, send_msg, send_game
 
 game = Hangman()
 
@@ -22,18 +21,17 @@ def handling_client_thread_function(client):
                 break
             else:
                 if message == 'reset':
-                    game.resetWent()
+                    game.reset_game()
                 elif message != 'get':
                     game.play(message)
 
-                # TODO: Geht das auch normal mit send?
-                client.sendall(pickle.dumps(game))
+                send_game(client, game)
         except:
             # Remove and close client
             client.close()
-            print(f'{nickname} hat das Spiel verlassen (exc).')
+            print(f'{nickname} hat das Spiel verlassen (exc)')
             break
-    print(f'{nickname} hat das Spiel verlassen.')
+    print(f'{nickname} hat das Spiel verlassen')
 
 
 # Main thread: Receiving / Listening function

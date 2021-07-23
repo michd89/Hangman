@@ -1,9 +1,7 @@
-import pickle
-
 import pygame
 import socket
 
-from utils import send_msg, recv_msg, RECV_SIZE
+from utils import send_msg, recv_msg, recv_game
 
 WIDTH = 800
 HEIGHT = 600
@@ -29,7 +27,7 @@ def connect_to_server(host, nick):
 def send(client, data):
     try:
         send_msg(client, data)
-        return pickle.loads(client.recv(RECV_SIZE))
+        return recv_game(client)
     except socket.error as e:
         print(e)
 
