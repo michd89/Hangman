@@ -1,3 +1,5 @@
+import math
+
 import pygame
 import socket
 
@@ -8,6 +10,7 @@ HEIGHT = 600
 WHITE = (255, 255, 255)
 DARKER_WHITE = (120, 120, 120)
 BACKGROUND_COLOR = (40, 40, 40)
+INCOMPLETE_HANGMAN = (70, 70, 70)
 pygame.font.init()
 font_normal = pygame.font.SysFont("courier", 16, bold=False)
 font_bold = pygame.font.SysFont("courier", 16, bold=True)
@@ -87,9 +90,78 @@ def redraw_score_board(player_data):
         y_text += 20
         y_line += 20
 
-    pygame.draw.line(win, DARKER_WHITE, (210, 0), (210, 588), 1)
-    pygame.draw.line(win, WHITE, (250, 0), (250, 589), 1)
-    pygame.draw.line(win, WHITE, (0, 589), (250, 589), 1)
+    pygame.draw.line(win, DARKER_WHITE, (210, 0), (210, HEIGHT), 1)
+    pygame.draw.line(win, WHITE, (250, 0), (250, HEIGHT), 1)
+
+
+def redraw_hangman():
+    start_x = 400
+    start_y = 20
+    angle = 30  # In degrees
+
+    # Pole
+    len_pole = 400
+    pygame.draw.line(win, INCOMPLETE_HANGMAN, (start_x, start_y), (start_x, start_y + len_pole), 10)
+
+    # Crossbeam
+    len_crossbeam = 200
+    pygame.draw.line(win, INCOMPLETE_HANGMAN, (start_x - 4, start_y), (start_x + len_crossbeam, start_y), 10)
+
+    # Brace
+    distance = 75
+    pygame.draw.line(win, INCOMPLETE_HANGMAN, (start_x, start_y + distance), (start_x + distance, start_y), 10)
+
+    # Noose
+    len_noose = 70
+    pygame.draw.line(win, INCOMPLETE_HANGMAN,
+                     (start_x + len_crossbeam - 4, start_y - 4),
+                     (start_x + len_crossbeam - 4, start_y + len_noose),
+                     10)
+
+    # Head
+    diameter = 70
+    pygame.draw.ellipse(win, INCOMPLETE_HANGMAN,
+                        (start_x + len_crossbeam - diameter // 2 - 3, start_y + len_noose,
+                         diameter, diameter), width=10)
+
+    # Torso
+    len_torso = 100
+    pygame.draw.line(win, INCOMPLETE_HANGMAN,
+                     (start_x + len_crossbeam - 4, start_y + len_noose + diameter - 4),
+                     (start_x + len_crossbeam - 4, start_y + len_noose + diameter + len_torso),
+                     10)
+
+    len_arms = 80
+
+    # Left arm
+    pygame.draw.line(win, INCOMPLETE_HANGMAN,
+                     (start_x + len_crossbeam - 4, start_y + len_noose + diameter - 4 + int(len_torso * 0.4)),
+                     (start_x + len_crossbeam - 4 - len_arms * math.cos((90 + angle)),
+                      start_y + len_noose + diameter - 4 + int(len_torso * 0.4) - len_arms * math.sin(90 + angle)),
+                     10)
+
+    # Right arm
+    pygame.draw.line(win, INCOMPLETE_HANGMAN,
+                     (start_x + len_crossbeam - 4, start_y + len_noose + diameter - 4 + int(len_torso * 0.4)),
+                     (start_x + len_crossbeam - 4 + len_arms * math.cos((90 + angle)),
+                      start_y + len_noose + diameter - 4 + int(len_torso * 0.4) - len_arms * math.sin(90 + angle)),
+                     10)
+
+    len_legs = 200
+
+    # Left leg
+    pygame.draw.line(win, INCOMPLETE_HANGMAN,
+                     (start_x + len_crossbeam - 3, start_y + len_noose + diameter - 4 + len_torso),
+                     (start_x + len_crossbeam - 3 - len_legs * math.cos((270 - angle)),
+                      start_y + len_noose + diameter - 4 + len_torso + len_arms * math.sin(270 - angle)),
+                     10)
+
+    # Right leg
+    pygame.draw.line(win, INCOMPLETE_HANGMAN,
+                     (start_x + len_crossbeam - 3, start_y + len_noose + diameter - 4 + len_torso),
+                     (start_x + len_crossbeam - 3 + len_legs * math.cos((270 - angle)),
+                      start_y + len_noose + diameter - 4 + len_torso + len_arms * math.sin(270 - angle)),
+                     10)
 
 
 def redraw_game_screen(player_data):
@@ -98,8 +170,7 @@ def redraw_game_screen(player_data):
     redraw_score_board(player_data)
 
     # Hangman
-
-    # Letters, Menu or Solution
+    redraw_hangman()
 
     pygame.display.update()
 
