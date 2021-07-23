@@ -21,20 +21,19 @@ def handling_client_thread_function(client):
             if not message:
                 break
             else:
-                print(f'Nachricht: {message}')
-                if message == "reset":
+                if message == 'reset':
                     game.resetWent()
-                elif message != "get":
+                elif message != 'get':
                     game.play(message)
 
                 # TODO: Geht das auch normal mit send?
                 client.sendall(pickle.dumps(game))
-
         except:
             # Remove and close client
             client.close()
-            print(f'{nickname} hat das Spiel verlassen.')
+            print(f'{nickname} hat das Spiel verlassen (exc).')
             break
+    print(f'{nickname} hat das Spiel verlassen.')
 
 
 # Main thread: Receiving / Listening function
