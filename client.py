@@ -67,11 +67,8 @@ def redraw_login_menu(host, name, entered_host, entered_name, login_error=False)
         pygame.time.delay(3000)
 
 
-def redraw_game_screen(player_data):
-    win.fill(BACKGROUND_COLOR)
-
-    # Nicklist
-    # Current design can show up to 29 players
+# Current design can show up to 29 players
+def redraw_score_board(player_data):
     y_text = 10
     y_line = 29
     for nickname, score in player_data:
@@ -93,6 +90,12 @@ def redraw_game_screen(player_data):
     pygame.draw.line(win, DARKER_WHITE, (210, 0), (210, 588), 1)
     pygame.draw.line(win, WHITE, (250, 0), (250, 589), 1)
     pygame.draw.line(win, WHITE, (0, 589), (250, 589), 1)
+
+
+def redraw_game_screen(player_data):
+    win.fill(BACKGROUND_COLOR)
+
+    redraw_score_board(player_data)
 
     # Hangman
 
