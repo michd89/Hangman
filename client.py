@@ -10,7 +10,7 @@ HEIGHT = 600
 WHITE = (255, 255, 255)
 DARKER_WHITE = (120, 120, 120)
 BACKGROUND_COLOR = (40, 40, 40)
-INCOMPLETE_HANGMAN = (70, 70, 70)
+INCOMPLETE_HANGMAN = (50, 50, 50)
 pygame.font.init()
 font_normal = pygame.font.SysFont("courier", 16, bold=False)
 font_bold = pygame.font.SysFont("courier", 16, bold=True)
