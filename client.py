@@ -194,13 +194,12 @@ def handle_text_typing(event, text_in, max_len=None):
 
 def main():
     client = None
-    nickname = None
-    run = True
-    entered_host = False
-    entered_name = False
     host = ''
     nickname = ''
+    entered_host = False
+    entered_name = False
     logged_in = False
+    run = True
     clock = pygame.time.Clock()
 
     while run:
@@ -220,7 +219,7 @@ def main():
         if logged_in:
             try:
                 game = send(client, 'get')
-                print(game)
+                # print(game)
             except:
                 run = False
                 print("Couldn't get game")
