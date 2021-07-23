@@ -31,7 +31,7 @@ def handling_client_thread_function(client):
             client.close()
             print(f'{nickname} hat das Spiel verlassen (exc)')
             break
-    print(f'{nickname} hat das Spiel verlassen')
+    print(f'{nickname} hat das Spiel verlassen (normal)')
 
 
 # Main thread: Receiving / Listening function
