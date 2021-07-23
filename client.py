@@ -100,7 +100,6 @@ def redraw_hangman(false_attempts=0):
             return WHITE
         return INCOMPLETE_HANGMAN
 
-
     start_x = 400
     start_y = 20
     angle = 30  # In degrees
@@ -191,6 +190,8 @@ def handle_text_typing(event, text_in, max_len=None):
             ch = ''
         if pressed[pygame.K_RSHIFT] or pressed[pygame.K_LSHIFT]:
             ch = ch.upper()
+        if event.key == pygame.K_KP_ENTER:
+            text_out += '\r'
         if not max_len or len(text_out) < max_len:
             text_out = text_out + ch
     return text_out
