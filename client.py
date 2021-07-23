@@ -100,7 +100,7 @@ def redraw_hangman(false_attempts=0):
             return WHITE
         return INCOMPLETE_HANGMAN
 
-    start_x = 400
+    start_x = 300
     start_y = 20
     angle = 30  # In degrees
     len_pole = 350
@@ -166,13 +166,15 @@ def redraw_hangman(false_attempts=0):
     # Pole
     pygame.draw.line(win, get_color(1), (start_x, start_y), (start_x, start_y + len_pole), 10)
 
+    # Remaining attempts
+    attempts = font_normal.render('Versuche: ' + str(10 - false_attempts), True, WHITE)
+    win.blit(attempts, (start_x + len_crossbeam + 30, start_y + len_noose // 2))
+
 
 def redraw_game_screen(player_data):
     win.fill(BACKGROUND_COLOR)
 
     redraw_score_board(player_data)
-
-    # Hangman
     redraw_hangman()
 
     pygame.display.update()
