@@ -12,7 +12,7 @@ def recv_msg(sock):
     return sock.recv(RECV_SIZE).decode(ENCODING)
 
 
-# TODO: Geht das auch normal mit send?
+# TODO: Geht das auch mit send?
 def send_game(sock, game):
     sock.sendall(pickle.dumps(game))
 
