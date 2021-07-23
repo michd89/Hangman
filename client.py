@@ -27,7 +27,7 @@ def connect_to_server(host, nick):
         print(f'Antwort vom Server: {recv_msg(client)}')
         return client
     except:
-        pass
+        return None
 
 
 def send(client, data):
