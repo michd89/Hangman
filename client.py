@@ -107,16 +107,13 @@ def main():
         clock.tick(60)
 
         if entered_host and entered_name and not logged_in:
-            try:
-                if not host:
-                    host = 'localhost'
-                client = connect_to_server(host, nickname)
-                logged_in = True
-            except:
-                print('Fehler beim Login')
+            if not host:
+                host = 'localhost'
+            client = connect_to_server(host, nickname)
+            logged_in = True
+            if not client:
                 redraw_login_menu(host, nickname, entered_host, entered_name, True)
                 pygame.quit()
-                run = False
                 break
 
         # Get current game state before handling user input
