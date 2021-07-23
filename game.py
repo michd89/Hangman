@@ -3,7 +3,8 @@ class Hangman:
         self.ready = False
         self.nicknames = []
         self.scores = []
-        # self.state ...
+        self.current_player = 0
+        self.solution = None
 
     def play(self, player='TODO', move='TODO'):
         print('spiel')
