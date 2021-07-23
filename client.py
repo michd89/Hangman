@@ -75,7 +75,7 @@ def redraw_score_board(player_data):
     y_text = 10
     y_line = 29
     for nickname, score in player_data:
-        test = font_bold.render(nickname, True, WHITE)
+        test = font_normal.render(nickname, True, WHITE)
         score_str = ''
         if score < 100:
             score_str += ' '
@@ -83,7 +83,7 @@ def redraw_score_board(player_data):
             score_str += ' '
         score_str += str(score)
 
-        test2 = font_bold.render(score_str, True, WHITE)
+        test2 = font_normal.render(score_str, True, WHITE)
         win.blit(test, (5, y_text))
         win.blit(test2, (215, y_text))
         pygame.draw.line(win, WHITE, (0, y_line), (250, y_line), 1)
