@@ -11,7 +11,7 @@ WHITE = (255, 255, 255)
 BACKGROUND_COLOR = (40, 40, 40)
 pygame.font.init()
 win = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Testbla")
+pygame.display.set_caption("Galgenraten ihr Gusten")
 
 
 def connect_to_server(host, nick):
@@ -100,8 +100,8 @@ def main():
     run = True
     entered_host = False
     entered_name = False
-    host_input = ''
-    name_input = ''
+    host = ''
+    nickname = ''
     logged_in = False
     clock = pygame.time.Clock()
 
@@ -110,13 +110,13 @@ def main():
 
         if entered_host and entered_name and not logged_in:
             try:
-                if not host_input:
-                    host_input = 'localhost'
-                client = connect_to_server(host_input, name_input)
+                if not host:
+                    host = 'localhost'
+                client = connect_to_server(host, nickname)
                 logged_in = True
             except:
                 print('Fehler beim Login')
-                redraw_login_menu(host_input, name_input, entered_host, entered_name, True)
+                redraw_login_menu(host, nickname, entered_host, entered_name, True)
                 pygame.quit()
                 run = False
                 break
@@ -124,7 +124,7 @@ def main():
         # Get current game state before handling user input
         if logged_in:
             try:
-                game = send(client, "get")
+                game = send(client, 'get')
                 print(game)
             except:
                 run = False
@@ -139,19 +139,18 @@ def main():
             if event.type == pygame.KEYDOWN:
                 # Login screen
                 if not entered_host:
-                    host_input = handle_text_typing(event, host_input)
-                    if host_input[-1:] == '\r':
-                        host_input = host_input[:-1]
+                    host = handle_text_typing(event, host)
+                    if host[-1:] == '\r':
+                        host = host[:-1]
                         entered_host = True
                 elif not entered_name:
                     # TODO: die zeichenbegrenzung kann man bestimmt in die funktion auslagern
-                    name_input = handle_text_typing(event, name_input, 21)
-                    if len(name_input) <= 21 and name_input[-1:] == '\r':
-                        name_input = name_input[:-1]
+                    nickname = handle_text_typing(event, nickname, 21)
+                    if len(nickname) <= 21 and nickname[-1:] == '\r':
+                        nickname = nickname[:-1]
                         entered_name = True
-                    elif len(name_input) == 21 and name_input[-1:] != '\r':
-                        name_input = name_input[:-1]
-                    nickname = name_input
+                    elif len(nickname) == 21 and nickname[-1:] != '\r':
+                        nickname = nickname[:-1]
                 # Actual game screen
                 else:
                     pass
@@ -159,7 +158,7 @@ def main():
         # Game mechanics
         if run:
             if not logged_in:
-                redraw_login_menu(host_input, name_input, entered_host, entered_name)
+                redraw_login_menu(host, nickname, entered_host, entered_name)
             else:
                 redraw_game_screen()
 
