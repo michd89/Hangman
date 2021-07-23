@@ -255,7 +255,9 @@ def main():
             if not logged_in:
                 redraw_login_menu(host, nickname, entered_host, entered_name)
             else:
-                redraw_game_screen()
+                # Test
+                player_data = [('mICHA', 152), ('Bratwurstkocher', 58), ('tak', 42), ('12345678901234567890', 22), ('Badewannenwinzer', 20), ('Tobsen', 13), ('Dor Ryan', 0)]
+                redraw_game_screen(player_data)
 
 
 if __name__ == '__main__':
