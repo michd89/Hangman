@@ -5,31 +5,28 @@ import socket
 
 from utils import send_msg, recv_msg, RECV_SIZE
 
-width = 800
-height = 600
+WIDTH = 800
+HEIGHT = 600
 WHITE = (255, 255, 255)
 BACKGROUND_COLOR = (40, 40, 40)
 pygame.font.init()
-win = pygame.display.set_mode((width, height))
+win = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Testbla")
-client = None
-nickname = None
 
 
-def connect_to_server():
-    global client
-    global nickname
-    port = 50000
-    host = input('Hostname oder IP (leer = localhost): ')
-    if not host:
-        host = 'localhost'
-    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client.connect((host, port))
-    send_msg(client, nickname)
-    print(f'Antwort vom Server: {recv_msg(client)}')
+def connect_to_server(host, nick):
+    try:
+        port = 50000
+        client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client.connect((host, port))
+        send_msg(client, nick)
+        print(f'Antwort vom Server: {recv_msg(client)}')
+        return client
+    except:
+        pass
 
 
-def send(data):
+def send(client, data):
     try:
         send_msg(client, data)
         return pickle.loads(client.recv(RECV_SIZE))
@@ -80,7 +77,7 @@ def redraw_game_screen():
     pygame.display.update()
 
 
-def handle_text_typing(text_in, max_len=None):
+def handle_text_typing(event, text_in, max_len=None):
     text_out = text_in
     pressed = pygame.key.get_pressed()
     if pressed[pygame.K_BACKSPACE]:
@@ -97,7 +94,9 @@ def handle_text_typing(text_in, max_len=None):
     return text_out
 
 
-if __name__ == '__main__':
+def main():
+    client = None
+    nickname = None
     run = True
     entered_host = False
     entered_name = False
@@ -106,8 +105,6 @@ if __name__ == '__main__':
     logged_in = False
     clock = pygame.time.Clock()
 
-    # connect_to_server()
-
     while run:
         clock.tick(60)
 
@@ -115,11 +112,7 @@ if __name__ == '__main__':
             try:
                 if not host_input:
                     host_input = 'localhost'
-                port = 50000
-                client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                client.connect((host_input, port))
-                send_msg(client, name_input)
-                print(f'Antwort vom Server: {recv_msg(client)}')
+                client = connect_to_server(host_input, name_input)
                 logged_in = True
             except:
                 print('Fehler beim Login')
@@ -131,7 +124,7 @@ if __name__ == '__main__':
         # Get current game state before handling user input
         if logged_in:
             try:
-                game = send("get")
+                game = send(client, "get")
                 print(game)
             except:
                 run = False
@@ -146,18 +139,19 @@ if __name__ == '__main__':
             if event.type == pygame.KEYDOWN:
                 # Login screen
                 if not entered_host:
-                    host_input = handle_text_typing(host_input)
+                    host_input = handle_text_typing(event, host_input)
                     if host_input[-1:] == '\r':
                         host_input = host_input[:-1]
                         entered_host = True
                 elif not entered_name:
                     # TODO: die zeichenbegrenzung kann man bestimmt in die funktion auslagern
-                    name_input = handle_text_typing(name_input, 21)
+                    name_input = handle_text_typing(event, name_input, 21)
                     if len(name_input) <= 21 and name_input[-1:] == '\r':
                         name_input = name_input[:-1]
                         entered_name = True
                     elif len(name_input) == 21 and name_input[-1:] != '\r':
                         name_input = name_input[:-1]
+                    nickname = name_input
                 # Actual game screen
                 else:
                     pass
@@ -168,3 +162,7 @@ if __name__ == '__main__':
                 redraw_login_menu(host_input, name_input, entered_host, entered_name)
             else:
                 redraw_game_screen()
+
+
+if __name__ == '__main__':
+    main()
