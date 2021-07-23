@@ -150,7 +150,7 @@ def redraw_hangman(false_attempts=0):
     # Head
     pygame.draw.ellipse(win, get_color(5),
                         (start_x + len_crossbeam - diameter // 2 - 3, start_y + len_noose,
-                         diameter, diameter), width=10)
+                         diameter, diameter), 10)
 
     # Noose
     pygame.draw.line(win, get_color(4),
