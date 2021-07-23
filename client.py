@@ -242,6 +242,8 @@ def main():
                     nickname = handle_text_typing(event, nickname, 21)
                     if len(nickname) <= 21 and nickname[-1:] == '\r':
                         nickname = nickname[:-1]
+                        if not nickname:
+                            nickname = 'Namenloser Gust'
                         entered_name = True
                     elif len(nickname) == 21 and nickname[-1:] != '\r':
                         nickname = nickname[:-1]
