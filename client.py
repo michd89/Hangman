@@ -104,7 +104,7 @@ def redraw_hangman(false_attempts=0):
             return WHITE
         return INCOMPLETE_HANGMAN
 
-    start_x = 300
+    start_x = 400
     start_y = 20
     angle = 30  # In degrees
     len_pole = 350
