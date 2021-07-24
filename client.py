@@ -71,11 +71,10 @@ def redraw_login_menu(host, name, entered_host, entered_name, login_error=False)
 
 
 # Current design can show up to 29 players
-def redraw_score_board(player_data):
+def redraw_score_board(player_data, current=0):
     y_text = 10
     y_line = 29
-    for nickname, score in player_data:
-        test = font_normal.render(nickname, True, WHITE)
+    for i, (nickname, score) in enumerate(player_data):
         score_str = ''
         if score < 100:
             score_str += ' '
@@ -83,9 +82,14 @@ def redraw_score_board(player_data):
             score_str += ' '
         score_str += str(score)
 
-        test2 = font_normal.render(score_str, True, WHITE)
-        win.blit(test, (5, y_text))
-        win.blit(test2, (215, y_text))
+        if i == current:
+            nick_text = font_bold.render(nickname, True, WHITE)
+            score_text = font_bold.render(score_str, True, WHITE)
+        else:
+            nick_text = font_normal.render(nickname, True, WHITE)
+            score_text = font_normal.render(score_str, True, WHITE)
+        win.blit(nick_text, (5, y_text))
+        win.blit(score_text, (215, y_text))
         pygame.draw.line(win, WHITE, (0, y_line), (250, y_line), 1)
         y_text += 20
         y_line += 20
