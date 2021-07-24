@@ -175,11 +175,16 @@ def redraw_hangman(false_attempts=0):
     win.blit(attempts, (start_x + len_crossbeam + 30, start_y + len_noose // 2))
 
 
+def redraw_controls():
+    pygame.draw.line(win, WHITE, (250, 400), (800, 400), 1)
+
+
 def redraw_game_screen(player_data):
     win.fill(BACKGROUND_COLOR)
 
     redraw_score_board(player_data)
     redraw_hangman()
+    redraw_controls()
 
     pygame.display.update()
 
