@@ -8,7 +8,10 @@ class Hangman:
         self.solution = None
 
     def play(self, player='TODO', move='TODO'):
-        print('spiel')
+        if self.ready:
+            print('spiel: nein')
+        else:
+            print('spiel: ja')
         pass
 
     def reset_game(self):

@@ -1,7 +1,7 @@
 import pygame
 
-from client_networking import connect_to_server, send
 from graphics import redraw_login_menu, redraw_game_screen
+from utils import connect_to_server, send
 
 
 def handle_text_typing(event, text_in, max_len=None):
