@@ -176,8 +176,35 @@ def redraw_hangman(false_attempts=0):
     win.blit(attempts, (start_x + len_crossbeam + 30, start_y + len_noose // 2))
 
 
+# Current design allows up to 22 letters (including spaces and hyphens)
 def redraw_controls():
-    pygame.draw.line(win, WHITE, (250, 400), (800, 400), 1)
+    start_x = 260
+    start_y = 380
+
+    word = 'ich ficke georgs muddaa'
+    word_formatted = ''.join([letter.upper() + ' ' for letter in word]).lstrip().rstrip()
+    underlines = ''.join(['_' if letter != ' ' and letter != '-' else ' ' for letter in word_formatted])
+
+    test = font_big_bold.render(word_formatted, True, WHITE)
+    win.blit(test, (start_x, start_y))
+    test = font_big_bold.render(underlines, True, WHITE)
+    win.blit(test, (start_x, start_y))
+
+    pygame.draw.line(win, WHITE, (250, start_y + 40), (WIDTH, start_y + 40), 1)
+
+    test = font_big_bold.render('A  B  C  D     F  G  H     J  K  L  M', True, WHITE)
+    win.blit(test, (start_x + 30, start_y + 60))
+    test = font_big_bold.render('   O     Q  R     T  U  V  W  X     Z', True, WHITE)
+    win.blit(test, (start_x + 30, start_y + 90))
+
+    hint1 = font_normal.render('Ä = AE', True, WHITE)
+    win.blit(hint1, (WIDTH - hint1.get_width() - 5, start_y + 140))
+    hint2 = font_normal.render('Ü = UE', True, WHITE)
+    win.blit(hint2, (WIDTH - hint1.get_width() - 5, start_y + 160))
+    hint3 = font_normal.render('Ö = OE', True, WHITE)
+    win.blit(hint3, (WIDTH - hint1.get_width() - 5, start_y + 180))
+    hint4 = font_normal.render('ß = SS', True, WHITE)
+    win.blit(hint4, (WIDTH - hint1.get_width() - 5, start_y + 200))
 
 
 def redraw_game_screen(player_data):
