@@ -14,6 +14,7 @@ INCOMPLETE_HANGMAN = (50, 50, 50)
 pygame.font.init()
 font_normal = pygame.font.SysFont("courier", 16, bold=False)
 font_bold = pygame.font.SysFont("courier", 16, bold=True)
+font_big_bold = pygame.font.SysFont("courier", 24, bold=True)
 win = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Galgenraten ihr Gusten")
 
