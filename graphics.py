@@ -161,7 +161,7 @@ def redraw_controls(solution):
     solution_formatted = ''.join([letter.upper() + ' ' for letter in solution]).lstrip().rstrip()
     underlines = ''.join(['_' if letter != ' ' and letter != '-' else ' ' for letter in solution_formatted])
 
-    test = font_big_bold.render(word_formatted, True, WHITE)
+    test = font_big_bold.render(solution_formatted, True, WHITE)
     win.blit(test, (start_x, start_y))
     test = font_big_bold.render(underlines, True, WHITE)
     win.blit(test, (start_x, start_y))
@@ -183,11 +183,11 @@ def redraw_controls(solution):
     win.blit(hint4, (WIDTH - hint1.get_width() - 5, start_y + 200))
 
 
-def redraw_game_screen(player_data):
+def redraw_game_screen(player_data, solution):
     win.fill(BACKGROUND_COLOR)
 
     redraw_score_board(player_data)
     redraw_hangman()
-    redraw_controls()
+    redraw_controls(solution)
 
     pygame.display.update()
