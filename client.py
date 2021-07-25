@@ -94,7 +94,8 @@ def main():
                                ('Dor Ryan', 0),
                                (nickname, 0)
                                ]
-                redraw_game_screen(player_data)
+                solution = 'der JUNGE mit DeM PeNiS'
+                redraw_game_screen(player_data, solution)
 
 
 if __name__ == '__main__':
