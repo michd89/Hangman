@@ -154,13 +154,12 @@ def redraw_hangman(false_attempts=4):
 
 
 # Current design allows up to 22 letters (including spaces and hyphens)
-def redraw_controls():
+def redraw_controls(solution):
     start_x = 260
     start_y = 380
 
-    word = 'Der Junge mit dem Penis'
-    word_formatted = ''.join([letter.upper() + ' ' for letter in word]).lstrip().rstrip()
-    underlines = ''.join(['_' if letter != ' ' and letter != '-' else ' ' for letter in word_formatted])
+    solution_formatted = ''.join([letter.upper() + ' ' for letter in solution]).lstrip().rstrip()
+    underlines = ''.join(['_' if letter != ' ' and letter != '-' else ' ' for letter in solution_formatted])
 
     test = font_big_bold.render(word_formatted, True, WHITE)
     win.blit(test, (start_x, start_y))
