@@ -72,7 +72,7 @@ def redraw_login_menu(host, name, entered_host, entered_name, login_error=False)
 
 
 # Current design can show up to 29 players
-def redraw_score_board(player_data, current=0):
+def redraw_score_board(player_data, current=4):
     y_text = 10
     y_line = 29
     for i, (nickname, score) in enumerate(player_data):
@@ -99,7 +99,7 @@ def redraw_score_board(player_data, current=0):
     pygame.draw.line(win, WHITE, (250, 0), (250, HEIGHT), 1)
 
 
-def redraw_hangman(false_attempts=0):
+def redraw_hangman(false_attempts=4):
     def get_color(number):
         if false_attempts >= number:
             return WHITE
@@ -291,17 +291,22 @@ def main():
                         entered_name = True
                     elif len(nickname) == 21 and nickname[-1:] != '\r':
                         nickname = nickname[:-1]
-                # Actual game screen
-                else:
-                    pass
 
-        # Game mechanics
+        # Graphics
         if run:
             if not logged_in:
                 redraw_login_menu(host, nickname, entered_host, entered_name)
             else:
                 # Test
-                player_data = [('mICHA', 152), ('Bratwurstkocher', 58), ('tak', 42), ('12345678901234567890', 22), ('Badewannenwinzer', 20), ('Tobsen', 13), ('Dor Ryan', 0)]
+                player_data = [('mICHA', 152),
+                               ('Bratwurstkocher', 58),
+                               ('tak', 42),
+                               ('12345678901234567890', 22),
+                               ('Badewannenwinzer', 20),
+                               ('Tobsen', 13),
+                               ('Dor Ryan', 0),
+                               (nickname, 0)
+                               ]
                 redraw_game_screen(player_data)
 
 
