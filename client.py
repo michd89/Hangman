@@ -94,7 +94,7 @@ def main():
                                ('Dor Ryan', 0),
                                (nickname, 0)
                                ]
-                solution = 'der JUNGE mit DeM PeNiS'
+                solution = '  der JUNGE mit DeM PeNiS      '
                 redraw_game_screen(player_data, solution)
 
 
