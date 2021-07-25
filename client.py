@@ -5,7 +5,7 @@ import socket
 
 from utils import send_msg, recv_msg, recv_game
 
-WIDTH = 800
+WIDTH = 900
 HEIGHT = 600
 WHITE = (255, 255, 255)
 DARKER_WHITE = (120, 120, 120)
