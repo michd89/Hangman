@@ -95,7 +95,8 @@ def main():
                                (nickname, 0)
                                ]
                 solution = 'd_r jung_ mit d_m p_nis'
-                redraw_game_screen(player_data, solution)
+                remaining_letters = 'ABCDFGHIJKLMNOPQRSTUVWXYZ'
+                redraw_game_screen(player_data, solution, remaining_letters)
 
 
 if __name__ == '__main__':

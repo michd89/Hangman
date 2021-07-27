@@ -155,13 +155,14 @@ def redraw_hangman(false_attempts=4):
 
 # Current design allows up to 22 symbols (including spaces and hyphens) with normal size
 # Up to 40 symbols with small but still readable font size (should not get smaller)
-def redraw_controls(solution_progress):
+def redraw_controls(solution_progress, remaining_letters):
     start_x = 260
     start_y = 380
 
     solution_formatted = ''.join([letter.upper() + ' ' for letter in solution_progress]).lstrip().rstrip()
     underlines = ''.join(['_' if letter not in [' ', '-', '_'] else ' ' for letter in solution_formatted])
 
+    # Solution progress
     font_size = 24
     start_font_y = start_y
     # TODO: Look for better solution of finding appropriate font size
@@ -179,11 +180,28 @@ def redraw_controls(solution_progress):
 
     pygame.draw.line(win, WHITE, (250, start_y + 40), (WIDTH, start_y + 40), 1)
 
-    test = font_big_bold.render('A  B  C  D     F  G  H     J  K  L  M', True, WHITE)
-    win.blit(test, (start_x + 30, start_y + 60))
-    test = font_big_bold.render('   O     Q  R     T  U  V  W  X     Z', True, WHITE)
-    win.blit(test, (start_x + 30, start_y + 90))
+    # Remaining letters
+    line = ''
+    for letter in 'ABCDEFGHIJKLM':
+        if letter in remaining_letters:
+            line += letter
+        else:
+            line += ' '
+        line += '  '
+    text = font_big_bold.render(line, True, WHITE)
+    win.blit(text, (start_x + 30, start_y + 60))
 
+    line = ''
+    for letter in 'NOPQRSTUVWXYZ':
+        if letter in remaining_letters:
+            line += letter
+        else:
+            line += ' '
+        line += '  '
+    text = font_big_bold.render(line, True, WHITE)
+    win.blit(text, (start_x + 30, start_y + 90))
+
+    # Hint for special letters
     hint1 = font_normal.render('Ä = AE', True, WHITE)
     win.blit(hint1, (WIDTH - hint1.get_width() - 5, start_y + 140))
     hint2 = font_normal.render('Ü = UE', True, WHITE)
@@ -194,11 +212,11 @@ def redraw_controls(solution_progress):
     win.blit(hint4, (WIDTH - hint1.get_width() - 5, start_y + 200))
 
 
-def redraw_game_screen(player_data, solution):
+def redraw_game_screen(player_data, solution, remaining_letters):
     win.fill(BACKGROUND_COLOR)
 
     redraw_score_board(player_data)
     redraw_hangman()
-    redraw_controls(solution)
+    redraw_controls(solution, remaining_letters)
 
     pygame.display.update()
