@@ -167,14 +167,14 @@ def redraw_controls(solution):
     # TODO: Look for better solution of finding appropriate font size
     while True:
         solution_font = pygame.font.SysFont("courier", font_size, bold=True)
-        test = solution_font.render(solution_formatted, True, WHITE)
-        if start_x + test.get_width() >= WIDTH:
+        solution_text = solution_font.render(solution_formatted, True, WHITE)
+        if start_x + solution_text.get_width() >= WIDTH:
             font_size -= 1
             start_font_y += 1
         else:
-            test2 = solution_font.render(underlines, True, WHITE)
-            win.blit(test, (start_x, start_font_y))
-            win.blit(test2, (start_x-1, start_font_y))  # Move one pixel to the left for better symmetry with letters
+            underlines_text = solution_font.render(underlines, True, WHITE)
+            win.blit(solution_text, (start_x, start_font_y))
+            win.blit(underlines_text, (start_x-1, start_font_y))  # Move one pixel to the left for better symmetry with letters
             break
 
     pygame.draw.line(win, WHITE, (250, start_y + 40), (WIDTH, start_y + 40), 1)
