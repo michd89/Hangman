@@ -169,14 +169,15 @@ def redraw_controls(must_enter_solution, solution_progress, remaining_letters):
     while True:
         solution_font = pygame.font.SysFont("courier", font_size, bold=True)
         solution_text = solution_font.render(solution_formatted, True, WHITE)
+        start_font_x = int(start_x + (WIDTH - start_x) / 2 - solution_text.get_width() / 2) - 3  # -3 for aesthetics
         if start_x + solution_text.get_width() >= WIDTH:
             font_size -= 1
             start_font_y += 1
         else:
             underlines_text = solution_font.render(underlines, True, WHITE)
-            win.blit(solution_text, (start_x, start_font_y))
+            win.blit(solution_text, (start_font_x, start_font_y))
             # Move one pixel to the left for better symmetry with letters
-            win.blit(underlines_text, (start_x-1, start_font_y))
+            win.blit(underlines_text, (start_font_x-1, start_font_y))
             break
 
     pygame.draw.line(win, WHITE, (250, start_y + 40), (WIDTH, start_y + 40), 1)
