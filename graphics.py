@@ -174,7 +174,7 @@ def redraw_controls(solution):
         else:
             test2 = solution_font.render(underlines, True, WHITE)
             win.blit(test, (start_x, start_font_y))
-            win.blit(test2, (start_x, start_font_y))
+            win.blit(test2, (start_x-1, start_font_y))  # Move one pixel to the left for better symmetry with letters
             break
 
     pygame.draw.line(win, WHITE, (250, start_y + 40), (WIDTH, start_y + 40), 1)
