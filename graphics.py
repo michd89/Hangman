@@ -155,12 +155,12 @@ def redraw_hangman(false_attempts=4):
 
 # Current design allows up to 22 symbols (including spaces and hyphens) with normal size
 # Up to 40 symbols with small but still readable font size (should not get smaller)
-def redraw_controls(solution):
+def redraw_controls(solution_progress):
     start_x = 260
     start_y = 380
 
-    solution_formatted = ''.join([letter.upper() + ' ' for letter in solution]).lstrip().rstrip()
-    underlines = ''.join(['_' if letter != ' ' and letter != '-' else ' ' for letter in solution_formatted])
+    solution_formatted = ''.join([letter.upper() + ' ' for letter in solution_progress]).lstrip().rstrip()
+    underlines = ''.join(['_' if letter not in [' ', '-', '_'] else ' ' for letter in solution_formatted])
 
     font_size = 24
     start_font_y = start_y
