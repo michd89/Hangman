@@ -26,9 +26,12 @@ def handle_line_typing(event, text_in, max_len=None):
 def main():
     client = None
     host = ''
-    nickname = ''
     entered_host = False
+    nickname = ''
     entered_name = False
+    solution = ''
+    entered_solution = False
+    must_enter_solution = True  # Test
     logged_in = False
     run = True
     clock = pygame.time.Clock()
@@ -78,7 +81,18 @@ def main():
                         entered_name = True
                     elif len(nickname) == 21 and nickname[-1:] != '\r':
                         nickname = nickname[:-1]
-
+                # Actual game screen
+                else:
+                    # Player's turn to enter a solution
+                    if must_enter_solution and not entered_solution:
+                        solution = handle_line_typing(event, solution, 41)
+                        if len(solution) <= 41 and solution[-1:] == '\r':
+                            solution = solution[:-1]
+                            entered_solution = True
+                        elif len(solution) == 41 and solution[-1:] != '\r':
+                            solution = solution[:-1]
+                        # elif solution[-1:] not in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ -':
+                        #     solution = solution[:-1]
         # Graphics
         if run:
             if not logged_in:
@@ -94,10 +108,9 @@ def main():
                                ('Dor Ryan', 0),
                                (nickname, 0)
                                ]
-                solution = 'd_r jung_ mit d_m p_nis'
                 remaining_letters = 'BCDGHIKLMNOQRSUVWY'
                 failed_attempts = 4
-                redraw_game_screen(player_data, solution, remaining_letters, failed_attempts)
+                redraw_game_screen(player_data, must_enter_solution, solution, remaining_letters, failed_attempts)
 
 
 if __name__ == '__main__':
