@@ -4,7 +4,7 @@ from graphics import redraw_login_menu, redraw_game_screen
 from utils import connect_to_server, send
 
 
-def handle_text_typing(event, text_in, max_len=None):
+def handle_line_typing(event, text_in, max_len=None):
     text_out = text_in
     pressed = pygame.key.get_pressed()
     if pressed[pygame.K_BACKSPACE]:
@@ -64,13 +64,13 @@ def main():
             if event.type == pygame.KEYDOWN:
                 # Login screen
                 if not entered_host:
-                    host = handle_text_typing(event, host)
+                    host = handle_line_typing(event, host)
                     if host[-1:] == '\r':
                         host = host[:-1]
                         entered_host = True
                 elif not entered_name:
                     # TODO: die zeichenbegrenzung kann man bestimmt in die funktion auslagern
-                    nickname = handle_text_typing(event, nickname, 21)
+                    nickname = handle_line_typing(event, nickname, 21)
                     if len(nickname) <= 21 and nickname[-1:] == '\r':
                         nickname = nickname[:-1]
                         if not nickname:
@@ -95,7 +95,7 @@ def main():
                                (nickname, 0)
                                ]
                 solution = 'd_r jung_ mit d_m p_nis'
-                remaining_letters = 'ABCDFGHIJKLMNOPQRSTUVWXYZ'
+                remaining_letters = 'BCDGHIKLMNOQRSUVWY'
                 redraw_game_screen(player_data, solution, remaining_letters)
 
 
