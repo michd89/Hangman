@@ -153,7 +153,8 @@ def redraw_hangman(false_attempts=4):
     win.blit(attempts, (start_x + len_crossbeam + 30, start_y + len_noose // 2))
 
 
-# Current design allows up to 22 letters (including spaces and hyphens)
+# Current design allows up to 22 symbols (including spaces and hyphens) with normal size
+# Up to 40 symbols with small but still readable font size (should not get smaller)
 def redraw_controls(solution):
     start_x = 260
     start_y = 380
@@ -161,10 +162,20 @@ def redraw_controls(solution):
     solution_formatted = ''.join([letter.upper() + ' ' for letter in solution]).lstrip().rstrip()
     underlines = ''.join(['_' if letter != ' ' and letter != '-' else ' ' for letter in solution_formatted])
 
-    test = font_big_bold.render(solution_formatted, True, WHITE)
-    win.blit(test, (start_x, start_y))
-    test = font_big_bold.render(underlines, True, WHITE)
-    win.blit(test, (start_x, start_y))
+    font_size = 24
+    start_font_y = start_y
+    # TODO: Look for better solution of finding appropriate font size
+    while True:
+        solution_font = pygame.font.SysFont("courier", font_size, bold=True)
+        test = solution_font.render(solution_formatted, True, WHITE)
+        if start_x + test.get_width() >= WIDTH:
+            font_size -= 1
+            start_font_y += 1
+        else:
+            test2 = solution_font.render(underlines, True, WHITE)
+            win.blit(test, (start_x, start_font_y))
+            win.blit(test2, (start_x, start_font_y))
+            break
 
     pygame.draw.line(win, WHITE, (250, start_y + 40), (WIDTH, start_y + 40), 1)
 
