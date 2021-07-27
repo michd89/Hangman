@@ -76,7 +76,7 @@ def redraw_score_board(player_data, current=4):
     pygame.draw.line(win, WHITE, (250, 0), (250, HEIGHT), 1)
 
 
-def redraw_hangman(false_attempts=4):
+def redraw_hangman(false_attempts):
     def get_color(number):
         if false_attempts >= number:
             return WHITE
@@ -175,7 +175,8 @@ def redraw_controls(solution_progress, remaining_letters):
         else:
             underlines_text = solution_font.render(underlines, True, WHITE)
             win.blit(solution_text, (start_x, start_font_y))
-            win.blit(underlines_text, (start_x-1, start_font_y))  # Move one pixel to the left for better symmetry with letters
+            # Move one pixel to the left for better symmetry with letters
+            win.blit(underlines_text, (start_x-1, start_font_y))
             break
 
     pygame.draw.line(win, WHITE, (250, start_y + 40), (WIDTH, start_y + 40), 1)
@@ -212,11 +213,11 @@ def redraw_controls(solution_progress, remaining_letters):
     win.blit(hint4, (WIDTH - hint1.get_width() - 5, start_y + 200))
 
 
-def redraw_game_screen(player_data, solution, remaining_letters):
+def redraw_game_screen(player_data, solution, remaining_letters, failed_attempts):
     win.fill(BACKGROUND_COLOR)
 
     redraw_score_board(player_data)
-    redraw_hangman()
+    redraw_hangman(failed_attempts)
     redraw_controls(solution, remaining_letters)
 
     pygame.display.update()

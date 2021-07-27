@@ -96,7 +96,8 @@ def main():
                                ]
                 solution = 'd_r jung_ mit d_m p_nis'
                 remaining_letters = 'BCDGHIKLMNOQRSUVWY'
-                redraw_game_screen(player_data, solution, remaining_letters)
+                failed_attempts = 4
+                redraw_game_screen(player_data, solution, remaining_letters, failed_attempts)
 
 
 if __name__ == '__main__':
