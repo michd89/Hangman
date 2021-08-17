@@ -4,7 +4,10 @@ from graphics import redraw_login_menu, redraw_game_screen
 from utils import connect_to_server, send
 
 
+# TODO: Find solution for handling special characters and keys when executed as exe
+# exe seems to use encoding for english keyboard layout
 def handle_line_typing(event, text_in, max_len=None):
+    valid_symbols = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890- '
     text_out = text_in
     pressed = pygame.key.get_pressed()
     if pressed[pygame.K_BACKSPACE]:
@@ -16,10 +19,11 @@ def handle_line_typing(event, text_in, max_len=None):
             ch = ''
         if pressed[pygame.K_RSHIFT] or pressed[pygame.K_LSHIFT]:
             ch = ch.upper()
-        if event.key == pygame.K_KP_ENTER:
+        if event.key == pygame.K_KP_ENTER or event.key == pygame.K_RETURN:
             text_out += '\r'
         if not max_len or len(text_out) < max_len:
-            text_out = text_out + ch
+            if ch in valid_symbols:
+                text_out = text_out + ch
     return text_out
 
 
