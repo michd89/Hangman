@@ -58,9 +58,10 @@ def main():
             try:
                 game = send(client, 'get')
                 # print(game)
-            except:
+            except Exception as e:
                 run = False
                 print("Couldn't get game")
+                print(e)
                 break
 
         # Handle user input
