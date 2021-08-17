@@ -91,13 +91,17 @@ def main():
                     # Player's turn to enter a solution
                     if must_enter_solution and not entered_solution:
                         solution = handle_line_typing(event, solution, 41)
-                        if len(solution) <= 41 and solution[-1:] == '\r':
+                        if solution == ' ':  # No leading space
+                            solution = ''
+                        elif len(solution) >= 2 and solution[-2:] == '  ':  # No multiple trailing spaces
+                            solution = solution[:-1]
+                        elif len(solution) <= 41 and solution[-1:] == '\r':
                             solution = solution[:-1]
                             entered_solution = True
                         elif len(solution) == 41 and solution[-1:] != '\r':
                             solution = solution[:-1]
-                        # elif solution[-1:] not in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ -':
-                        #     solution = solution[:-1]
+                        elif solution[-1:] not in 'abcdefghijklmnopqrstuvwxyz -':
+                            solution = solution[:-1]
         # Graphics
         if run:
             if not logged_in:
