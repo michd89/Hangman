@@ -10,8 +10,14 @@ game = Hangman()
 # Sub thread: Handles messages from certain client
 def handling_client_thread_function(client):
     nickname = recv_msg(client)
-    print(f'{nickname} ist dem Spiel beigetreten')
-    send_msg(client, 'OK')
+    if game.add_player(nickname):
+        print(f'{nickname} ist dem Spiel beigetreten')
+        send_msg(client, 'OK')
+    else:
+        print(f'{nickname} gibts schon')
+        send_msg(client, 'NOPE')
+        client.close()
+        return
 
     while True:
         try:
@@ -29,8 +35,10 @@ def handling_client_thread_function(client):
         except:
             # Remove and close client
             client.close()
+            game.delete_player(nickname)
             print(f'{nickname} hat das Spiel verlassen (exc)')
             break
+    game.delete_player(nickname)
     print(f'{nickname} hat das Spiel verlassen (normal)')
 
 

@@ -111,16 +111,8 @@ def main():
             if not logged_in:
                 redraw_login_menu(host, nickname, entered_host, entered_name)
             else:
+                player_data = list(zip(game.nicknames, game.scores))
                 # Test
-                player_data = [('mICHA', 152),
-                               ('Bratwurstkocher', 58),
-                               ('tak', 42),
-                               ('12345678901234567890', 22),
-                               ('Badewannenwinzer', 20),
-                               ('Tobsen', 13),
-                               ('Dor Ryan', 0),
-                               (nickname, 0)
-                               ]
                 remaining_letters = 'BCDGHIKLMNOQRSUVWY'
                 failed_attempts = 4
                 redraw_game_screen(player_data, must_enter_solution, solution, remaining_letters, failed_attempts)

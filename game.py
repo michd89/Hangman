@@ -11,10 +11,13 @@ class Hangman:
         if nickname in self.nicknames:
             return False
         self.nicknames.append(nickname)
+        self.scores.append(0)
         return True
 
     def delete_player(self, nickname):
-        pass
+        index = self.nicknames.index(nickname)
+        del(self.scores[index])
+        del(self.nicknames[index])
 
     def play(self, player='TODO', move='TODO'):
         if self.ready:
