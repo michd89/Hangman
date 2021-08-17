@@ -7,6 +7,15 @@ class Hangman:
         self.remaining_letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
         self.solution = None
 
+    def add_player(self, nickname):
+        if nickname in self.nicknames:
+            return False
+        self.nicknames.append(nickname)
+        return True
+
+    def delete_player(self, nickname):
+        pass
+
     def play(self, player='TODO', move='TODO'):
         if self.ready:
             print('spiel: nein')

@@ -16,7 +16,7 @@ win = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Galgenraten ihr Gusten")
 
 
-def redraw_login_menu(host, name, entered_host, entered_name, login_error=False):
+def redraw_login_menu(host, name, entered_host, entered_name, login_state='OK'):
     win.fill(BACKGROUND_COLOR)
 
     message = f'Hostname oder IP (leer = localhost): {host}'
@@ -38,13 +38,16 @@ def redraw_login_menu(host, name, entered_host, entered_name, login_error=False)
         fertig = font_bold.render('Verbinde...', True, WHITE)
         win.blit(fertig, (100, 400))
 
-    if login_error:
+    if login_state == 'ERROR':
         error_text = font_bold.render('Fehler beim Verbinden!', True, WHITE)
+        win.blit(error_text, (100, 450))
+    if login_state == 'NAME_TAKEN':
+        error_text = font_bold.render('Name schon vergeben!', True, WHITE)
         win.blit(error_text, (100, 450))
 
     pygame.display.update()
 
-    if login_error:
+    if login_state != 'OK':
         pygame.time.delay(3000)
 
 

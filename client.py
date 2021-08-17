@@ -48,8 +48,12 @@ def main():
                 host = 'localhost'
             client = connect_to_server(host, nickname)
             logged_in = True
+            if client == 'NOPE':
+                redraw_login_menu(host, nickname, entered_host, entered_name, 'NAME_TAKEN')
+                pygame.quit()
+                break
             if not client:
-                redraw_login_menu(host, nickname, entered_host, entered_name, True)
+                redraw_login_menu(host, nickname, entered_host, entered_name, 'ERROR')
                 pygame.quit()
                 break
 
