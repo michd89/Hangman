@@ -4,6 +4,7 @@ class Hangman:
         self.nicknames = []
         self.scores = []
         self.current_player = 0
+        self.failed_attempts = '0'
         self.remaining_letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
         self.solution = None
 
@@ -27,5 +28,6 @@ class Hangman:
         pass
 
     def reset_game(self):
+        self.failed_attempts = 0
         self.scores[:] = [0 for _ in self.scores]
         self.remaining_letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
