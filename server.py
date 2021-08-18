@@ -11,10 +11,10 @@ game = Hangman()
 def handling_client_thread_function(client):
     nickname = recv_msg(client)
     if game.add_player(nickname):
-        print(f'{nickname} ist dem Spiel beigetreten')
+        print('{nickname} ist dem Spiel beigetreten'.format(nickname=nickname))
         send_msg(client, 'OK')
     else:
-        print(f'{nickname} gibts schon')
+        print('{nickname} gibts schon'.format(nickname=nickname))
         send_msg(client, 'NOPE')
         client.close()
         return
@@ -36,10 +36,10 @@ def handling_client_thread_function(client):
             # Remove and close client
             client.close()
             game.delete_player(nickname)
-            print(f'{nickname} hat das Spiel verlassen (exc)')
+            print('{nickname} hat das Spiel verlassen (exc)'.format(nickname=nickname))
             break
     game.delete_player(nickname)
-    print(f'{nickname} hat das Spiel verlassen (normal)')
+    print('{nickname} hat das Spiel verlassen (normal)'.format(nickname=nickname))
 
 
 # Main thread: Receiving / Listening function
@@ -50,7 +50,7 @@ def receive():
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind((host, port))
     server.listen()
-    print(f'Server horcht auf {host}:{port} ...')
+    print('Server horcht auf {host}:{port} ...'.format(host=host, port=port))
 
     while True:
         # Accept connection

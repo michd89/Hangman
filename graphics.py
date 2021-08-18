@@ -19,13 +19,13 @@ pygame.display.set_caption("Galgenraten ihr Gusten")
 def redraw_login_menu(host, name, entered_host, entered_name, login_state='OK'):
     win.fill(BACKGROUND_COLOR)
 
-    message = f'Hostname oder IP (leer = localhost): {host}'
+    message = 'Hostname oder IP (leer = localhost): {host}'.format(host=host)
     if not entered_host and not entered_name:
         host = font_bold.render(message, True, WHITE)
     else:
         host = font_normal.render(message, True, WHITE)
 
-    message = f'Name eingeben: {name}'
+    message = 'Name eingeben: {name}'.format(name=name)
     if entered_host and not entered_name:
         name = font_bold.render(message, True, WHITE)
     else:

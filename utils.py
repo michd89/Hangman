@@ -28,8 +28,12 @@ def connect_to_server(host, nick):
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client.connect((host, port))
         send_msg(client, nick)
-        print(f'Antwort vom Server: {recv_msg(client)}')
-        return client
+        response = recv_msg(client)
+        print('Antwort vom Server: {response}'.format(response=response))
+        if response == 'OK':
+            return client
+        if response == 'NOPE':
+            return 'NOPE'
     except:
         return None
 
