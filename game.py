@@ -1,12 +1,13 @@
 class Hangman:
     def __init__(self):
         self.ready = False
+        # TODO: Tupel draus machen
         self.nicknames = []
         self.scores = []
         self.current_player = 0
-        self.failed_attempts = '0'
+        self.failed_attempts = 0
         self.remaining_letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-        self.solution = None
+        self.solution = ''
 
     def add_player(self, nickname):
         if nickname in self.nicknames:
