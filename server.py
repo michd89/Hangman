@@ -26,10 +26,10 @@ def handling_client_thread_function(client):
             if not message:
                 break
             else:
-                if message == 'reset':
+                if message.startswith('reset'):
                     game.reset_game()
-                elif message != 'get':
-                    game.play(message)
+                elif message.startswith('solution'):
+                    game.solution = message[9:]
 
                 send_game(client, game)
         except:
