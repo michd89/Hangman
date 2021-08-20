@@ -107,7 +107,7 @@ def main():
                             solution = solution[:-1]
                         elif solution[-1:] not in 'abcdefghijklmnopqrstuvwxyz -':
                             solution = solution[:-1]
-                        send(client, 'solution ' + solution)
+                        send(client, 'solution ' + solution.upper())
         # Graphics
         if run:
             if not logged_in:
