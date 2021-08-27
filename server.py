@@ -23,15 +23,14 @@ def handling_client_thread_function(client):
         try:
             message = recv_msg(client)
 
-            if not message:
+            if not message:  # Player left game
                 break
-            else:
-                if message.startswith('reset'):
-                    game.reset_game()
-                elif message.startswith('solution'):
-                    game.solution = message[9:]
+            if message.startswith('reset'):
+                game.reset_game()
+            elif message.startswith('solution'):
+                game.solution = message[9:]
 
-                send_game(client, game)
+            send_game(client, game)
         except:
             # Remove and close client
             client.close()
