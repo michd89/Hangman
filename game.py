@@ -21,13 +21,6 @@ class Hangman:
         del(self.scores[index])
         del(self.nicknames[index])
 
-    def play(self, player='TODO', move='TODO'):
-        if self.ready:
-            print('spiel: nein')
-        else:
-            print('spiel: ja')
-        pass
-
     def reset_game(self):
         self.failed_attempts = 0
         self.scores[:] = [0 for _ in self.scores]
