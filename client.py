@@ -44,8 +44,6 @@ def main():
         clock.tick(60)
 
         if entered_host and entered_name and not logged_in:
-            if not host:
-                host = 'localhost'
             client = connect_to_server(host, nickname)
             logged_in = True
             if client == 'NOPE':
@@ -80,6 +78,8 @@ def main():
                     if host[-1:] == '\r':
                         host = host[:-1]
                         entered_host = True
+                        if not host:
+                            host = 'localhost'
                 elif not entered_name:
                     # TODO: die zeichenbegrenzung kann man bestimmt in die funktion auslagern
                     nickname = handle_line_typing(event, nickname, 21)
