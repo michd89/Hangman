@@ -29,6 +29,8 @@ def handling_client_thread_function(client):
                 game.reset_game()
             elif message.startswith('solution'):
                 game.solution = message[len('solution')+1:]
+            elif message.startswith('enter'):
+                game.entered_solution = True
 
             send_game(client, game)
         except Exception as exc:

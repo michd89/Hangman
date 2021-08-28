@@ -5,6 +5,8 @@ class Hangman:
         self.nicknames = []
         self.scores = []
         self.current_player = 0
+        self.giving_player = 0
+        self.entered_solution = False
         self.failed_attempts = 0
         self.remaining_letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
         self.solution = ''

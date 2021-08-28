@@ -33,10 +33,10 @@ def main():
     entered_host = False
     nickname = ''
     entered_name = False
-    solution = ''
-    entered_solution = False
-    must_enter_solution = True  # Test
     logged_in = False
+    solution = ''
+    game = None  # For suppressing warning
+    gives_solution = False  # For suppressing warning
     run = True
     clock = pygame.time.Clock()
 
@@ -59,6 +59,7 @@ def main():
         if logged_in:
             try:
                 game = send(client, 'get')
+                gives_solution = nickname == game.nicknames[game.current_player] and not game.entered_solution
                 # print(game)
             except Exception as e:
                 print("Couldn't get game")
@@ -92,7 +93,7 @@ def main():
                 # Actual game screen
                 else:
                     # Player's turn to enter a solution
-                    if nickname == game.nicknames[game.current_player] and not entered_solution:
+                    if gives_solution:
                         solution = handle_line_typing(event, solution, 41)
                         if solution == ' ':  # No leading space
                             solution = ''
@@ -100,8 +101,7 @@ def main():
                             solution = solution[:-1]
                         elif len(solution) <= 41 and solution[-1:] == '\r':
                             solution = solution[:-1]
-                            entered_solution = True
-                            must_enter_solution = False
+                            send(client, 'enter')
                         elif len(solution) == 41 and solution[-1:] != '\r':
                             solution = solution[:-1]
                         elif solution[-1:] not in 'abcdefghijklmnopqrstuvwxyz -':
