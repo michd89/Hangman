@@ -115,7 +115,7 @@ def main():
                 # TODO: Sort
                 # https://stackoverflow.com/questions/8459231/sort-tuples-based-on-second-parameter
                 player_data = list(zip(game.nicknames, game.scores))
-                redraw_game_screen(player_data, must_enter_solution, game.solution, game.remaining_letters, game.failed_attempts)
+                redraw_game_screen(player_data, gives_solution, game)
 
 
 if __name__ == '__main__':

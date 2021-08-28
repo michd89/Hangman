@@ -52,7 +52,7 @@ def redraw_login_menu(host, name, entered_host, entered_name, login_state='OK'):
 
 
 # Current design can show up to 29 players
-def redraw_score_board(player_data, current=4):
+def redraw_score_board(player_data, current):
     y_text = 10
     y_line = 29
     for i, (nickname, score) in enumerate(player_data):
@@ -158,7 +158,7 @@ def redraw_hangman(false_attempts):
 
 # Current design allows up to 22 symbols (including spaces and hyphens) with normal size
 # Up to 40 symbols with small but still readable font size (should not get smaller)
-def redraw_controls(must_enter_solution, solution_progress, remaining_letters):
+def redraw_controls(gives_solution, entered_solution, solution_progress, remaining_letters):
     start_x = 260
     start_y = 380
 
@@ -186,7 +186,8 @@ def redraw_controls(must_enter_solution, solution_progress, remaining_letters):
     pygame.draw.line(win, WHITE, (250, start_y + 40), (WIDTH, start_y + 40), 1)
 
     # User input
-    if not must_enter_solution:
+    if not gives_solution:
+        # Remaining letters
         line = ''
         for letter in 'ABCDEFGHIJKLM':
             if letter in remaining_letters:
@@ -207,12 +208,23 @@ def redraw_controls(must_enter_solution, solution_progress, remaining_letters):
         text = font_big_bold.render(line, True, WHITE)
         win.blit(text, (start_x + 30, start_y + 90))
     else:
+        # Hint for player who gives solution
         enter_solution = 'Lösung eingeben (max. 40 Zeichen)'
         text = font_big_bold.render(enter_solution, True, WHITE)
         win.blit(text, (start_x + 30, start_y + 60))
         enter_solution = 'Erlaubt: A-Z, Leerzeichen, Bindestrich'
         text = font_big_bold.render(enter_solution, True, WHITE)
         win.blit(text, (start_x + 30, start_y + 90))
+
+    # if gives_solution und nicht entered_solution
+      # gib ein
+    # if entered_solution
+      # if gives_solution and not dran
+        # gust rät
+      # else
+        # menü und buchstaben
+    # if not gives_solution und nicht entered_solution
+      # gust gibt ein
 
     # Hint for special letters
     hint1 = font_normal.render('Ä = AE', True, WHITE)
@@ -225,11 +237,11 @@ def redraw_controls(must_enter_solution, solution_progress, remaining_letters):
     win.blit(hint4, (WIDTH - hint1.get_width() - 5, start_y + 200))
 
 
-def redraw_game_screen(player_data, must_enter_solution, solution, remaining_letters, failed_attempts):
+def redraw_game_screen(player_data, gives_solution, game):
     win.fill(BACKGROUND_COLOR)
 
-    redraw_score_board(player_data)
-    redraw_hangman(failed_attempts)
-    redraw_controls(must_enter_solution, solution, remaining_letters)
+    redraw_score_board(player_data, game.current_player)
+    redraw_hangman(game.failed_attempts)
+    redraw_controls(gives_solution, game.entered_solution, game.solution, game.remaining_letters)
 
     pygame.display.update()
