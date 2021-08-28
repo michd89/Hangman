@@ -31,11 +31,12 @@ def handling_client_thread_function(client):
                 game.solution = message[len('solution')+1:]
 
             send_game(client, game)
-        except:
+        except Exception as exc:
             # Remove and close client
             client.close()
             game.delete_player(nickname)
             print('{nickname} hat das Spiel verlassen (exc)'.format(nickname=nickname))
+            print(exc)
             break
     game.delete_player(nickname)
     print('{nickname} hat das Spiel verlassen (normal)'.format(nickname=nickname))
