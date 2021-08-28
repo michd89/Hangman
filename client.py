@@ -61,7 +61,6 @@ def main():
                 game = send(client, 'get')
                 # print(game)
             except Exception as e:
-                run = False
                 print("Couldn't get game")
                 print(e)
                 break
