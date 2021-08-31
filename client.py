@@ -24,6 +24,8 @@ def handle_line_typing(event, text_in, max_len=None):
         if not max_len or len(text_out) < max_len:
             if ch in allowed_symbols:
                 text_out = text_out + ch
+            if ch == '/':  # Catch '-' button input when executed as exe
+                text_out = text_out + '-'
     return text_out
 
 
