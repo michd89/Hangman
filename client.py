@@ -37,6 +37,7 @@ def main():
     entered_name = False
     logged_in = False
     solution = ''
+    my_turn = False  # For suprressing warning
     game = None  # For suppressing warning
     gives_solution = False  # For suppressing warning
     run = True
@@ -63,7 +64,8 @@ def main():
         if logged_in:
             try:
                 game = send(client, 'get')
-                gives_solution = nickname == game.nicknames[game.current_player] and not game.entered_solution
+                gives_solution = nickname == game.nicknames[game.solution_giver] and not game.entered_solution
+                my_turn = nickname == game.nicknames[game.current_player]
                 # print(game)
             except Exception as e:
                 print("Couldn't get game")
@@ -120,7 +122,7 @@ def main():
                 # TODO: Sort
                 # https://stackoverflow.com/questions/8459231/sort-tuples-based-on-second-parameter
                 player_data = list(zip(game.nicknames, game.scores))
-                redraw_game_screen(player_data, gives_solution, game)
+                redraw_game_screen(player_data, gives_solution, my_turn, game)
 
 
 if __name__ == '__main__':

@@ -7,9 +7,12 @@ class Hangman:
         self.current_player = 0
         self.entered_solution = False
         self.failed_attempts = 0
-        self.remaining_letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+        self.solution_giver = 0
+        #self.remaining_letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+        self.remaining_letters = 'ABCDFGHIJKMOPQUVWXYZ'
         self.solution = ''
 
+    # TODO: Zufällig mit insert einfügen
     def add_player(self, nickname):
         if nickname in self.nicknames:
             return False
@@ -21,8 +24,18 @@ class Hangman:
         index = self.nicknames.index(nickname)
         del(self.scores[index])
         del(self.nicknames[index])
+        self.next_player()
 
-    def reset_game(self):
+    # TODO: Am besten hier immer neu Reihenfolge mischen
+    def start_guessing(self):
+        self.entered_solution = True
+        self.next_player()
+
+    def next_player(self):
+        self.current_player = self.current_player + 1 if self.current_player + 1 < len(self.nicknames) else 0
+        if self.current_player == self.solution_giver:
+            self.next_player()
+
+    def new_game(self):
         self.failed_attempts = 0
-        self.scores[:] = [0 for _ in self.scores]
         self.remaining_letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
