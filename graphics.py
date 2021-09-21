@@ -228,7 +228,7 @@ def redraw_controls(gives_solution, my_turn, game):
             message = 'Du bist dran, du Gust!'
             text = font_big_bold.render(message, True, WHITE)
             win.blit(text, (start_x + 30, start_y + 150))
-        else:  # Another players turn to guess
+        else:  # Another player's turn to guess
             message = '{} rät.'.format(game.nicknames[game.current_player])
             text = font_big_bold.render(message, True, WHITE)
             win.blit(text, (start_x + 30, start_y + 150))
