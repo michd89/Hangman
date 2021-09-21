@@ -48,6 +48,8 @@ def main():
         if entered_host and entered_name and not logged_in:
             client = connect_to_server(host, nickname)
             logged_in = True
+            if nickname:
+                pygame.display.set_caption("Galgenraten ihr Gusten ({})".format(nickname))
             if client == 'NOPE':
                 redraw_login_menu(host, nickname, entered_host, entered_name, 'NAME_TAKEN')
                 pygame.quit()
