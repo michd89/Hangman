@@ -156,6 +156,28 @@ def redraw_hangman(false_attempts):
     win.blit(attempts, (start_x + len_crossbeam + 30, start_y + len_noose // 2))
 
 
+def redraw_remaining_letters(game, start_x, start_y):
+    line = ''
+    for letter in 'ABCDEFGHIJKLM':
+        if letter in game.remaining_letters:
+            line += letter
+        else:
+            line += ' '
+        line += '  '
+    text = font_big_bold.render(line, True, WHITE)
+    win.blit(text, (start_x + 30, start_y + 60))
+
+    line = ''
+    for letter in 'NOPQRSTUVWXYZ':
+        if letter in game.remaining_letters:
+            line += letter
+        else:
+            line += ' '
+        line += '  '
+    text = font_big_bold.render(line, True, WHITE)
+    win.blit(text, (start_x + 30, start_y + 90))
+
+
 # Current design allows up to 22 symbols (including spaces and hyphens) with normal size
 # Up to 40 symbols with small but still readable font size (should not get smaller)
 def redraw_controls(gives_solution, my_turn, game):
@@ -205,30 +227,15 @@ def redraw_controls(gives_solution, my_turn, game):
         win.blit(incomplete_text, (start_font_x, start_font_y))
         win.blit(underlines_text, (start_font_x - 1, start_font_y))
         if my_turn:  # This players turn to guess
-            # Remaining letters
-            line = ''
-            for letter in 'ABCDEFGHIJKLM':
-                if letter in game.remaining_letters:
-                    line += letter
-                else:
-                    line += ' '
-                line += '  '
-            text = font_big_bold.render(line, True, WHITE)
-            win.blit(text, (start_x + 30, start_y + 60))
-
-            line = ''
-            for letter in 'NOPQRSTUVWXYZ':
-                if letter in game.remaining_letters:
-                    line += letter
-                else:
-                    line += ' '
-                line += '  '
-            text = font_big_bold.render(line, True, WHITE)
-            win.blit(text, (start_x + 30, start_y + 90))
+            redraw_remaining_letters(game, start_x, start_y)
             message = 'Du bist dran, du Gust!'
             text = font_big_bold.render(message, True, WHITE)
             win.blit(text, (start_x + 30, start_y + 150))
+            message = '(Mit Pfeiltasten wählen und ENTER drücken)'
+            text = font_normal.render(message, True, WHITE)
+            win.blit(text, (start_x + 25, start_y + 180))
         else:  # Another player's turn to guess
+            redraw_remaining_letters(game, start_x, start_y)
             message = '{} rät.'.format(game.nicknames[game.current_player])
             text = font_big_bold.render(message, True, WHITE)
             win.blit(text, (start_x + 30, start_y + 150))
