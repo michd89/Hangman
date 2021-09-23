@@ -8,8 +8,7 @@ class Hangman:
         self.entered_solution = False
         self.failed_attempts = 0
         self.solution_giver = 0
-        #self.remaining_letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-        self.remaining_letters = 'ABCDFGHIJKMOPQUVWXYZ'
+        self.remaining_letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
         self.solution = ''
 
     # TODO: Zufällig mit insert einfügen
