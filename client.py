@@ -22,7 +22,7 @@ def handle_line_typing(event, text_in, max_len=None):
             ch = ''
         if pressed[pygame.K_RSHIFT] or pressed[pygame.K_LSHIFT]:
             ch = ch.upper()
-        if event.key == pygame.K_KP_ENTER or event.key == pygame.K_RETURN:
+        if pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]:
             text_out += '\r'
         if not max_len or len(text_out) < max_len:
             if ch in allowed_symbols:
