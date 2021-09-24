@@ -137,10 +137,7 @@ def main():
                 # TODO: Sort
                 # https://stackoverflow.com/questions/8459231/sort-tuples-based-on-second-parameter
                 player_data = list(zip(game.nicknames, game.scores))
-                redraw_game_screen(player_data, gives_solution, my_turn, game)
-
-                if my_turn and not gives_solution:
-                    print(game.remaining_letters[chosen_letter_index])
+                redraw_game_screen(player_data, gives_solution, my_turn, chosen_letter_index, game)
 
 
 def my_except_hook(exctype, value, tb):
