@@ -120,12 +120,10 @@ def main():
                         send(client, 'solution ' + solution.upper())
                     # Player has to guess
                     if my_turn and not gives_solution:
-                        if chosen_letter_index is None:
-                            chosen_letter_index = 0
                         pressed = pygame.key.get_pressed()
                         if pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]:
                             send(client, 'guess ' + game.remaining_letters[chosen_letter_index])
-                            chosen_letter_index = None
+                            chosen_letter_index = 0
                         if pressed[pygame.K_RIGHT]:
                             chosen_letter_index = (chosen_letter_index + 1) % len(game.remaining_letters)
                         if pressed[pygame.K_LEFT]:
