@@ -40,6 +40,7 @@ def main():
     entered_name = False
     logged_in = False
     solution = ''
+    chosen_letter_index = 0
     my_turn = False  # For suprressing warning
     game = None  # For suppressing warning
     gives_solution = False  # For suppressing warning
@@ -117,6 +118,19 @@ def main():
                         elif solution[-1:] not in 'abcdefghijklmnopqrstuvwxyz -':
                             solution = solution[:-1]
                         send(client, 'solution ' + solution.upper())
+                    # Player has to guess
+                    if my_turn and not gives_solution:
+                        if chosen_letter_index is None:
+                            chosen_letter_index = 0
+                        pressed = pygame.key.get_pressed()
+                        if pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]:
+                            send(client, 'guess ' + game.remaining_letters[chosen_letter_index])
+                            chosen_letter_index = None
+                        if pressed[pygame.K_RIGHT]:
+                            chosen_letter_index = (chosen_letter_index + 1) % len(game.remaining_letters)
+                        if pressed[pygame.K_LEFT]:
+                            chosen_letter_index = (chosen_letter_index - 1) % len(game.remaining_letters)
+
         # Graphics
         if run:
             if not logged_in:
@@ -126,6 +140,9 @@ def main():
                 # https://stackoverflow.com/questions/8459231/sort-tuples-based-on-second-parameter
                 player_data = list(zip(game.nicknames, game.scores))
                 redraw_game_screen(player_data, gives_solution, my_turn, game)
+
+                if my_turn and not gives_solution:
+                    print(game.remaining_letters[chosen_letter_index])
 
 
 def my_except_hook(exctype, value, tb):
