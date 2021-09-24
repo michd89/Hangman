@@ -33,6 +33,8 @@ class Hangman:
     def guess_letter(self, letter):
         if letter in self.remaining_letters and letter in self.solution:
             self.scores[self.current_player] += 1
+        else:
+            self.failed_attempts += 1
         self.remaining_letters = self.remaining_letters.replace(letter, '')
         # sieg und verlieren hier auswerten?
 
