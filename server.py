@@ -25,12 +25,14 @@ def handling_client_thread_function(client):
 
             if not message:  # Player left game
                 break
-            if message.startswith('reset'):
-                game.reset_game()
+            # if message.startswith('reset'):
+            #     game.reset_game()
             elif message.startswith('solution'):
                 game.solution = message[len('solution')+1:]  # TODO: In Klassenmethode auslagern
             elif message.startswith('enter'):
                 game.start_guessing()
+            elif message.startswith('guess'):
+                game.guess_letter(message[len('guess')+1:])
 
             send_game(client, game)
         except Exception as exc:
