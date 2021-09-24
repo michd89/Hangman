@@ -30,6 +30,12 @@ class Hangman:
         self.entered_solution = True
         self.next_player()
 
+    def guess_letter(self, letter):
+        if letter in self.remaining_letters and letter in self.solution:
+            self.scores[self.current_player] += 1
+        self.remaining_letters = self.remaining_letters.replace(letter, '')
+        # sieg und verlieren hier auswerten?
+
     def next_player(self):
         self.current_player = (self.current_player + 1) % len(self.nicknames)
         if self.current_player == self.solution_giver:
