@@ -1,3 +1,6 @@
+import sys
+import traceback
+
 import pygame
 
 from graphics import redraw_login_menu, redraw_game_screen
@@ -125,5 +128,13 @@ def main():
                 redraw_game_screen(player_data, gives_solution, my_turn, game)
 
 
+def my_except_hook(exctype, value, tb):
+    with open('exception.txt', 'w+') as file:
+        for line in traceback.format_exception(exctype, value, tb):
+            file.write(line)
+    sys.__excepthook__(exctype, value, traceback)
+
+
 if __name__ == '__main__':
+    sys.excepthook = my_except_hook
     main()
