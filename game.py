@@ -36,6 +36,7 @@ class Hangman:
         else:
             self.failed_attempts += 1
         self.remaining_letters = self.remaining_letters.replace(letter, '')
+        self.next_player()
         # sieg und verlieren hier auswerten?
 
     def next_player(self):
