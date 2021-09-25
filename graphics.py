@@ -156,6 +156,37 @@ def redraw_hangman(false_attempts):
     win.blit(attempts, (start_x + len_crossbeam + 30, start_y + len_noose // 2))
 
 
+# TODO: Look for better solution of finding appropriate font size
+def get_solution_text(solution_formatted, underlines, incomplete_solution, start_x, start_y):
+    font_size = 24
+    start_font_y = start_y
+    while True:
+        solution_font = pygame.font.SysFont("courier", font_size, bold=True)
+        solution_text = solution_font.render(solution_formatted, True, WHITE)
+        incomplete_text = solution_font.render(incomplete_solution, True, WHITE)
+        start_font_x = int(start_x + (WIDTH - start_x) / 2 - solution_text.get_width() / 2) - 3  # -3 for aesthetics
+        if start_x + solution_text.get_width() >= WIDTH:
+            font_size -= 1
+            start_font_y += 1
+        else:
+            underlines_text = solution_font.render(underlines, True, WHITE)
+            return solution_text, underlines_text, incomplete_text, start_font_x, start_font_y
+
+
+def redraw_enter_solution(solution_text, underlines_text, start_font_x, start_font_y, start_x, start_y):
+    win.blit(solution_text, (start_font_x, start_font_y))
+    # Move one pixel to the left for better symmetry with letters
+    win.blit(underlines_text, (start_font_x - 1, start_font_y))
+
+    message = 'Lösung eingeben (max. 40 Zeichen)'
+    text = font_big_bold.render(message, True, WHITE)
+    win.blit(text, (start_x + 30, start_y + 60))
+
+    message = 'Erlaubt: A-Z, Leerzeichen, Bindestrich'
+    text = font_big_bold.render(message, True, WHITE)
+    win.blit(text, (start_x + 30, start_y + 90))
+
+
 def redraw_chosen_letter(chosen_letter_index, start_x, start_y, game):
     first_line = 'ABCDEFGHIJKLM'
     second_line = 'NOPQRSTUVWXYZ'
@@ -193,6 +224,30 @@ def redraw_remaining_letters(game, start_x, start_y):
     win.blit(text, (start_x + 30, start_y + 90))
 
 
+def redraw_guessing_player(chosen_letter_index, start_x, start_y, game):
+    redraw_chosen_letter(chosen_letter_index, start_x, start_y, game)
+    redraw_remaining_letters(game, start_x, start_y)
+
+    message = 'Du bist dran, du Gust!'
+    text = font_big_bold.render(message, True, WHITE)
+    win.blit(text, (start_x + 30, start_y + 150))
+
+    message = '(Mit links und rechts wählen und ENTER drücken)'
+    text = font_normal.render(message, True, WHITE)
+    win.blit(text, (start_x + 25, start_y + 180))
+
+
+def redraw_hint_special_letters(start_y):
+    hint1 = font_normal.render('Ä = AE', True, WHITE)
+    win.blit(hint1, (WIDTH - hint1.get_width() - 5, start_y + 140))
+    hint2 = font_normal.render('Ü = UE', True, WHITE)
+    win.blit(hint2, (WIDTH - hint1.get_width() - 5, start_y + 160))
+    hint3 = font_normal.render('Ö = OE', True, WHITE)
+    win.blit(hint3, (WIDTH - hint1.get_width() - 5, start_y + 180))
+    hint4 = font_normal.render('ß = SS', True, WHITE)
+    win.blit(hint4, (WIDTH - hint1.get_width() - 5, start_y + 200))
+
+
 # Current design allows up to 22 symbols (including spaces and hyphens) with normal size
 # Up to 40 symbols with small but still readable font size (should not get smaller)
 def redraw_controls(gives_solution, my_turn, chosen_letter_index, game):
@@ -204,53 +259,25 @@ def redraw_controls(gives_solution, my_turn, chosen_letter_index, game):
     incomplete_solution = ''.join([letter if letter not in game.remaining_letters + '-' else ' ' for letter in solution_formatted])
 
     # Solution progress
-    font_size = 24
-    start_font_y = start_y
-    # TODO: Look for better solution of finding appropriate font size
-    while True:
-        solution_font = pygame.font.SysFont("courier", font_size, bold=True)
-        solution_text = solution_font.render(solution_formatted, True, WHITE)
-        incomplete_text = solution_font.render(incomplete_solution, True, WHITE)
-        start_font_x = int(start_x + (WIDTH - start_x) / 2 - solution_text.get_width() / 2) - 3  # -3 for aesthetics
-        if start_x + solution_text.get_width() >= WIDTH:
-            font_size -= 1
-            start_font_y += 1
-        else:
-            underlines_text = solution_font.render(underlines, True, WHITE)
-            # Move one pixel to the left for better symmetry with letters
-            break
+    result_solution_text = get_solution_text(solution_formatted, underlines, incomplete_solution, start_x, start_y)
+    solution_text, underlines_text, incomplete_text, start_font_x, start_font_y = result_solution_text
 
     pygame.draw.line(win, WHITE, (250, start_y + 40), (WIDTH, start_y + 40), 1)
 
     # User input
     if not game.entered_solution:  # One player is entering solution
         if gives_solution:  # This player must enter solution
-            win.blit(solution_text, (start_font_x, start_font_y))
-            win.blit(underlines_text, (start_font_x-1, start_font_y))
-            # Hint for player who gives solution
-            enter_solution = 'Lösung eingeben (max. 40 Zeichen)'
-            text = font_big_bold.render(enter_solution, True, WHITE)
-            win.blit(text, (start_x + 30, start_y + 60))
-            enter_solution = 'Erlaubt: A-Z, Leerzeichen, Bindestrich'
-            text = font_big_bold.render(enter_solution, True, WHITE)
-            win.blit(text, (start_x + 30, start_y + 90))
+            redraw_enter_solution(solution_text, underlines_text, start_font_x, start_font_y, start_x, start_y)
         else:  # Another player must enter solution
             message = '{} gibt Lösung ein.'.format(game.nicknames[game.solution_giver])
             text = font_big_bold.render(message, True, WHITE)
             win.blit(text, (start_x + 30, start_y + 60))
     else:  # Hier noch Unterscheidung, ob man gegeben hat, wegen mehr Infos (noch fehlende Buchstaben ausgrauen)?
         win.blit(incomplete_text, (start_font_x, start_font_y))
+        # Move one pixel to the left for better symmetry with letters
         win.blit(underlines_text, (start_font_x - 1, start_font_y))
         if my_turn:  # This player's turn to guess
-            redraw_chosen_letter(chosen_letter_index, start_x, start_y, game)
-            redraw_remaining_letters(game, start_x, start_y)
-
-            message = 'Du bist dran, du Gust!'
-            text = font_big_bold.render(message, True, WHITE)
-            win.blit(text, (start_x + 30, start_y + 150))
-            message = '(Mit links und rechts wählen und ENTER drücken)'
-            text = font_normal.render(message, True, WHITE)
-            win.blit(text, (start_x + 25, start_y + 180))
+            redraw_guessing_player(chosen_letter_index, start_x, start_y, game)
         else:  # Another player's turn to guess
             # Vielleicht hier: if gives_solution: Zeige graue fehlende Buchstaben ...
             redraw_remaining_letters(game, start_x, start_y)
@@ -259,15 +286,7 @@ def redraw_controls(gives_solution, my_turn, chosen_letter_index, game):
             win.blit(text, (start_x + 30, start_y + 150))
             pass
 
-    # Hint for special letters
-    hint1 = font_normal.render('Ä = AE', True, WHITE)
-    win.blit(hint1, (WIDTH - hint1.get_width() - 5, start_y + 140))
-    hint2 = font_normal.render('Ü = UE', True, WHITE)
-    win.blit(hint2, (WIDTH - hint1.get_width() - 5, start_y + 160))
-    hint3 = font_normal.render('Ö = OE', True, WHITE)
-    win.blit(hint3, (WIDTH - hint1.get_width() - 5, start_y + 180))
-    hint4 = font_normal.render('ß = SS', True, WHITE)
-    win.blit(hint4, (WIDTH - hint1.get_width() - 5, start_y + 200))
+    redraw_hint_special_letters(start_y)
 
 
 def redraw_game_screen(player_data, gives_solution, my_turn, chosen_letter_index, game):
