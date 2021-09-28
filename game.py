@@ -54,7 +54,8 @@ class Hangman:
             self.new_game()
         elif self.state == 'win':
             self.new_game()
-        self.next_player()
+        else:
+            self.next_player()
 
     def next_player(self):
         if len(self.nicknames) == 1:
@@ -64,5 +65,8 @@ class Hangman:
             self.next_player()
 
     def new_game(self):
+        self.entered_solution = False
+        self.solution = ''
         self.failed_attempts = 0
         self.remaining_letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+        self.next_player()
