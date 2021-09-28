@@ -40,6 +40,8 @@ class Hangman:
         # sieg und verlieren hier auswerten?
 
     def next_player(self):
+        if len(self.nicknames) == 1:
+            return
         self.current_player = (self.current_player + 1) % len(self.nicknames)
         if self.current_player == self.solution_giver:
             self.next_player()
