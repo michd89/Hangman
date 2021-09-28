@@ -2,12 +2,14 @@ class Hangman:
     def __init__(self):
         self.ready = False
         # TODO: Tupel draus machen
+        # Oder gar eine Spielerklasse mit Punkten, Status etc.?
         self.nicknames = []
         self.scores = []
         self.current_player = 0
         self.entered_solution = False
         self.failed_attempts = 0
         self.solution_giver = 0
+        self.state = 'run'
         self.remaining_letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
         self.solution = ''
 
@@ -30,14 +32,29 @@ class Hangman:
         self.entered_solution = True
         self.next_player()
 
+    def evaluate_match(self):
+        if self.failed_attempts == 10:
+            self.state = 'lose'
+        # Check if there are still remaining letters not chosen yet
+        elif not set(self.solution).intersection(set(self.remaining_letters)):
+            self.state = 'win'
+        else:
+            self.state = 'run'
+        return
+
     def guess_letter(self, letter):
         if letter in self.remaining_letters and letter in self.solution:
             self.scores[self.current_player] += 1
         else:
             self.failed_attempts += 1
         self.remaining_letters = self.remaining_letters.replace(letter, '')
+        self.evaluate_match()
+        if self.state == 'lose':
+            self.scores[self.solution_giver] += 3
+            self.new_game()
+        elif self.state == 'win':
+            self.new_game()
         self.next_player()
-        # sieg und verlieren hier auswerten?
 
     def next_player(self):
         if len(self.nicknames) == 1:
