@@ -72,4 +72,4 @@ class Hangman:
         self.solution = ''
         self.failed_attempts = 0
         self.remaining_letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-        self.next_player()
+        self.solution_giver = self.next_player()
