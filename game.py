@@ -59,10 +59,11 @@ class Hangman:
 
     def next_player(self):
         if len(self.nicknames) == 1:
-            return
+            return 0
         self.current_player = (self.current_player + 1) % len(self.nicknames)
         if self.current_player == self.solution_giver:
             self.next_player()
+        return self.current_player
 
     def new_game(self):
         self.entered_solution = False
