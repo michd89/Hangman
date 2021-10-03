@@ -113,6 +113,8 @@ def main():
                             solution = solution[:-1]
                             if solution:  # No empty solution
                                 send(client, 'enter')
+                                solution = ''
+                                continue
                         elif len(solution) == 41 and solution[-1:] != '\r':
                             solution = solution[:-1]
                         elif solution[-1:] not in 'abcdefghijklmnopqrstuvwxyz -':
