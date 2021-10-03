@@ -58,8 +58,10 @@ class Hangman:
             self.next_player()
 
     def next_player(self):
+        # Play the game in some kind of singleplayer/local mode
         if len(self.nicknames) == 1:
             return 0
+
         self.current_player = (self.current_player + 1) % len(self.nicknames)
         if self.current_player == self.solution_giver:
             self.next_player()
