@@ -249,6 +249,19 @@ def redraw_hint_special_letters(start_y):
     win.blit(hint4, (WIDTH - hint1.get_width() - 5, start_y + 200))
 
 
+def redraw_last_move(game):
+    if not game.last_letter:
+        return
+    text = font_normal.render('Geraten: {}'.format(game.last_letter), True, WHITE)
+    win.blit(text, (700, 250))
+    if game.state == 'win':
+        text = font_normal.render('Partie gewonnen', True, WHITE)
+        win.blit(text, (700, 270))
+    elif game.state == 'lose':
+        text = font_normal.render('Partie verloren', True, WHITE)
+        win.blit(text, (700, 270))
+
+
 # Current design allows up to 22 symbols (including spaces and hyphens) with normal size
 # Up to 40 symbols with small but still readable font size (should not get smaller)
 def redraw_controls(gives_solution, is_solution_giver, my_turn, chosen_letter_index, game):
@@ -259,6 +272,9 @@ def redraw_controls(gives_solution, is_solution_giver, my_turn, chosen_letter_in
     underlines = ''.join(['_' if letter not in [' ', '-', '_'] else ' ' for letter in solution_formatted])
     incomplete_solution = ''.join([letter if letter not in game.remaining_letters + '-' else ' ' for letter in solution_formatted])
     missing_letters = ''.join([letter if letter in game.remaining_letters + '-' else ' ' for letter in solution_formatted])
+
+    # Show what was done in the last move and if game is won or lost
+    redraw_last_move(game)
 
     # Solution progress
     result_solution_text = get_solution_text(solution_formatted, underlines, incomplete_solution, missing_letters, start_x, start_y)

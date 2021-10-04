@@ -12,6 +12,7 @@ class Hangman:
         self.state = 'run'
         self.remaining_letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
         self.solution = ''
+        self.last_letter = ''
 
     # TODO: Zufällig mit insert einfügen
     def add_player(self, nickname):
@@ -48,6 +49,7 @@ class Hangman:
         else:
             self.failed_attempts += 1
         self.remaining_letters = self.remaining_letters.replace(letter, '')
+        self.last_letter = letter
         self.evaluate_match()
         if self.state == 'lose':
             self.scores[self.solution_giver] += 3
