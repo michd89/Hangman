@@ -44,6 +44,7 @@ def main():
     my_turn = False  # For suprressing warning
     game = None  # For suppressing warning
     gives_solution = False  # For suppressing warning
+    is_solution_giver = False  # For suppressing warning
     run = True
     clock = pygame.time.Clock()
 
@@ -68,7 +69,8 @@ def main():
         if logged_in:
             try:
                 game = send(client, 'get')
-                gives_solution = nickname == game.nicknames[game.solution_giver] and not game.entered_solution
+                is_solution_giver = nickname == game.nicknames[game.solution_giver]
+                gives_solution = is_solution_giver and not game.entered_solution
                 my_turn = nickname == game.nicknames[game.current_player]
                 # print(game)
             except Exception as e:
@@ -139,7 +141,8 @@ def main():
                 # TODO: Sort
                 # https://stackoverflow.com/questions/8459231/sort-tuples-based-on-second-parameter
                 player_data = list(zip(game.nicknames, game.scores))
-                redraw_game_screen(player_data, gives_solution, my_turn, chosen_letter_index, game)
+                redraw_game_screen(player_data, gives_solution, is_solution_giver,
+                                   my_turn, chosen_letter_index, game)
 
 
 def my_except_hook(exctype, value, tb):

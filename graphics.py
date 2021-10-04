@@ -157,20 +157,21 @@ def redraw_hangman(false_attempts):
 
 
 # TODO: Look for better solution of finding appropriate font size
-def get_solution_text(solution_formatted, underlines, incomplete_solution, start_x, start_y):
+def get_solution_text(solution_formatted, underlines, incomplete_solution, missing_letters, start_x, start_y):
     font_size = 24
     start_font_y = start_y
     while True:
         solution_font = pygame.font.SysFont("courier", font_size, bold=True)
         solution_text = solution_font.render(solution_formatted, True, WHITE)
         incomplete_text = solution_font.render(incomplete_solution, True, WHITE)
+        missing_text = solution_font.render(missing_letters, True, DARKER_WHITE)
         start_font_x = int(start_x + (WIDTH - start_x) / 2 - solution_text.get_width() / 2) - 3  # -3 for aesthetics
         if start_x + solution_text.get_width() >= WIDTH:
             font_size -= 1
             start_font_y += 1
         else:
             underlines_text = solution_font.render(underlines, True, WHITE)
-            return solution_text, underlines_text, incomplete_text, start_font_x, start_font_y
+            return solution_text, underlines_text, incomplete_text, missing_text, start_font_x, start_font_y
 
 
 def redraw_enter_solution(solution_text, underlines_text, start_font_x, start_font_y, start_x, start_y):
@@ -250,17 +251,18 @@ def redraw_hint_special_letters(start_y):
 
 # Current design allows up to 22 symbols (including spaces and hyphens) with normal size
 # Up to 40 symbols with small but still readable font size (should not get smaller)
-def redraw_controls(gives_solution, my_turn, chosen_letter_index, game):
+def redraw_controls(gives_solution, is_solution_giver, my_turn, chosen_letter_index, game):
     start_x = 260
     start_y = 380
 
     solution_formatted = ''.join([letter.upper() + ' ' for letter in game.solution]).lstrip().rstrip()
     underlines = ''.join(['_' if letter not in [' ', '-', '_'] else ' ' for letter in solution_formatted])
     incomplete_solution = ''.join([letter if letter not in game.remaining_letters + '-' else ' ' for letter in solution_formatted])
+    missing_letters = ''.join([letter if letter in game.remaining_letters + '-' else ' ' for letter in solution_formatted])
 
     # Solution progress
-    result_solution_text = get_solution_text(solution_formatted, underlines, incomplete_solution, start_x, start_y)
-    solution_text, underlines_text, incomplete_text, start_font_x, start_font_y = result_solution_text
+    result_solution_text = get_solution_text(solution_formatted, underlines, incomplete_solution, missing_letters, start_x, start_y)
+    solution_text, underlines_text, incomplete_text, missing_text, start_font_x, start_font_y = result_solution_text
 
     pygame.draw.line(win, WHITE, (250, start_y + 40), (WIDTH, start_y + 40), 1)
 
@@ -272,14 +274,19 @@ def redraw_controls(gives_solution, my_turn, chosen_letter_index, game):
             message = '{} gibt Lösung ein.'.format(game.nicknames[game.solution_giver])
             text = font_big_bold.render(message, True, WHITE)
             win.blit(text, (start_x + 30, start_y + 60))
-    else:  # Hier noch Unterscheidung, ob man gegeben hat, wegen mehr Infos (noch fehlende Buchstaben ausgrauen)?
+    else:  # One player is guessing
         win.blit(incomplete_text, (start_font_x, start_font_y))
+
         # Move one pixel to the left for better symmetry with letters
         win.blit(underlines_text, (start_font_x - 1, start_font_y))
+
+        # Show missing letters if player gave the solution and is not playing alone
+        if is_solution_giver and len(game.nicknames) != 1:
+            win.blit(missing_text, (start_font_x - 1, start_font_y))
+
         if my_turn:  # This player's turn to guess
             redraw_guessing_player(chosen_letter_index, start_x, start_y, game)
         else:  # Another player's turn to guess
-            # Vielleicht hier: if gives_solution: Zeige graue fehlende Buchstaben ...
             redraw_remaining_letters(game, start_x, start_y)
             message = '{} rät.'.format(game.nicknames[game.current_player])
             text = font_big_bold.render(message, True, WHITE)
@@ -289,11 +296,11 @@ def redraw_controls(gives_solution, my_turn, chosen_letter_index, game):
     redraw_hint_special_letters(start_y)
 
 
-def redraw_game_screen(player_data, gives_solution, my_turn, chosen_letter_index, game):
+def redraw_game_screen(player_data, gives_solution, is_solution_giver, my_turn, chosen_letter_index, game):
     win.fill(BACKGROUND_COLOR)
 
     redraw_score_board(player_data, game.current_player)
     redraw_hangman(game.failed_attempts)
-    redraw_controls(gives_solution, my_turn, chosen_letter_index, game)
+    redraw_controls(gives_solution, is_solution_giver, my_turn, chosen_letter_index, game)
 
     pygame.display.update()
