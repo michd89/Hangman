@@ -138,9 +138,8 @@ def main():
             if not logged_in:
                 redraw_login_menu(host, nickname, entered_host, entered_name)
             else:
-                # TODO: Sort
-                # https://stackoverflow.com/questions/8459231/sort-tuples-based-on-second-parameter
                 player_data = list(zip(game.nicknames, game.scores))
+                player_data.sort(key=lambda x: x[1], reverse=True)
                 redraw_game_screen(player_data, gives_solution, is_solution_giver,
                                    my_turn, chosen_letter_index, game)
 
