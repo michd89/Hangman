@@ -270,8 +270,8 @@ def redraw_controls(gives_solution, is_solution_giver, my_turn, chosen_letter_in
 
     solution_formatted = ''.join([letter.upper() + ' ' for letter in game.solution]).lstrip().rstrip()
     underlines = ''.join(['_' if letter not in [' ', '-', '_'] else ' ' for letter in solution_formatted])
-    incomplete_solution = ''.join([letter if letter not in game.remaining_letters + '-' else ' ' for letter in solution_formatted])
-    missing_letters = ''.join([letter if letter in game.remaining_letters + '-' else ' ' for letter in solution_formatted])
+    incomplete_solution = ''.join([letter if letter not in game.remaining_letters else ' ' for letter in solution_formatted])
+    missing_letters = ''.join([letter if letter in game.remaining_letters else ' ' for letter in solution_formatted])
 
     # Show what was done in the last move and if game is won or lost
     redraw_last_move(game)
