@@ -1,3 +1,6 @@
+from random import randint
+
+
 class Player:
     def __init__(self, nickname):
         self.nickname = nickname
@@ -26,14 +29,13 @@ class Hangman:
                 return player
         return None
 
-    # TODO: Zufällig mit insert einfügen
     def add_player(self, nickname):
         if self.get_player(nickname):
             return False
         new_player = Player(nickname)
         if not self.players:
             self.current_player = self.solution_giver = new_player
-        self.players.append(new_player)
+        self.players.insert(randint(0, len(self.players)), new_player)
         return True
 
     def delete_player(self, nickname):
