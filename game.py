@@ -20,6 +20,15 @@ class Hangman:
         self.solution = ''
         self.last_letter = ''
 
+    def my_turn(self, player):
+        return player == self.current_player
+
+    def is_solution_giver(self, player):
+        return player == self.solution_giver
+
+    def must_give_solution(self, player):
+        return player == self.solution_giver and not self.entered_solution
+
     def set_solution(self, solution):
         self.solution = solution
 
@@ -86,7 +95,7 @@ class Hangman:
             self.current_player = self.players[0]
         else:
             self.current_player = self.players[index + 1]
-        if self.current_player == self.solution_giver:
+        if self.is_solution_giver(self.current_player):
             self.next_player()
         return self.current_player
 
@@ -96,3 +105,4 @@ class Hangman:
         self.failed_attempts = 0
         self.remaining_letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
         self.solution_giver = self.next_player()
+
