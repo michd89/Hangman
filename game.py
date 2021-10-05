@@ -50,7 +50,7 @@ class Hangman:
     def delete_player(self, nickname):
         player = self.get_player(nickname)
         if player:
-            del player
+            self.players.remove(player)
             self.next_player()
             return True
         return False
