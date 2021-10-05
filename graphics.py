@@ -157,10 +157,10 @@ def redraw_hangman(false_attempts):
     win.blit(attempts, (start_x + len_crossbeam + 30, start_y + len_noose // 2))
 
 
-# TODO: Look for better solution of finding appropriate font size
 def get_solution_text(solution_formatted, underlines, incomplete_solution, missing_letters, start_x, start_y):
     font_size = 24
     start_font_y = start_y
+    # Try smaller font size until fitting
     while True:
         solution_font = pygame.font.SysFont("courier", font_size, bold=True)
         solution_text = solution_font.render(solution_formatted, True, WHITE)
