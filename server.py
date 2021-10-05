@@ -28,7 +28,7 @@ def handling_client_thread_function(client):
             # if message.startswith('reset'):
             #     game.reset_game()
             elif message.startswith('solution'):
-                game.solution = message[len('solution')+1:]  # TODO: In Klassenmethode auslagern
+                game.set_solution(message[len('solution') + 1:])
             elif message.startswith('enter'):
                 game.start_guessing()
             elif message.startswith('guess'):

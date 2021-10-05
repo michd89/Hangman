@@ -17,6 +17,9 @@ class Hangman:
         self.solution = ''
         self.last_letter = ''
 
+    def set_solution(self, solution):
+        self.solution = solution
+
     def get_player(self, nickname):
         for player in self.players:
             if player.nickname == nickname:
