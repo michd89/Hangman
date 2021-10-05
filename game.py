@@ -1,34 +1,46 @@
+class Player:
+    def __init__(self, nickname):
+        self.nickname = nickname
+        self.score = 0
+
+
 class Hangman:
     def __init__(self):
         self.ready = False
-        # TODO: Tupel draus machen
-        # Oder gar eine Spielerklasse mit Punkten, Status etc.?
-        self.nicknames = []
-        self.scores = []
-        self.current_player = 0
+        self.players = []
+        self.current_player = None
+        self.solution_giver = None
         self.entered_solution = False
         self.failed_attempts = 0
-        self.solution_giver = 0
         self.state = 'run'
         self.remaining_letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
         self.solution = ''
         self.last_letter = ''
 
+    def get_player(self, nickname):
+        for player in self.players:
+            if player.nickname == nickname:
+                return player
+        return None
+
     # TODO: Zufällig mit insert einfügen
     def add_player(self, nickname):
-        if nickname in self.nicknames:
+        if self.get_player(nickname):
             return False
-        self.nicknames.append(nickname)
-        self.scores.append(0)
+        new_player = Player(nickname)
+        if not self.players:
+            self.current_player = self.solution_giver = new_player
+        self.players.append(new_player)
         return True
 
     def delete_player(self, nickname):
-        index = self.nicknames.index(nickname)
-        del(self.scores[index])
-        del(self.nicknames[index])
-        self.next_player()
+        player = self.get_player(nickname)
+        if player:
+            del player
+            self.next_player()
+            return True
+        return False
 
-    # TODO: Am besten hier immer neu Reihenfolge mischen
     def start_guessing(self):
         self.entered_solution = True
         self.next_player()
@@ -45,14 +57,14 @@ class Hangman:
 
     def guess_letter(self, letter):
         if letter in self.remaining_letters and letter in self.solution:
-            self.scores[self.current_player] += 1
+            self.current_player.score += 1
         else:
             self.failed_attempts += 1
         self.remaining_letters = self.remaining_letters.replace(letter, '')
         self.last_letter = letter
         self.evaluate_match()
         if self.state == 'lose':
-            self.scores[self.solution_giver] += 3
+            self.solution_giver.score += 3
             self.new_game()
         elif self.state == 'win':
             self.new_game()
@@ -61,10 +73,14 @@ class Hangman:
 
     def next_player(self):
         # Play the game in some kind of singleplayer/local mode
-        if len(self.nicknames) == 1:
-            return 0
+        if len(self.players) == 1:
+            return self.players[0]
 
-        self.current_player = (self.current_player + 1) % len(self.nicknames)
+        index = self.players.index(self.current_player)
+        if index == len(self.players) - 1:
+            self.current_player = self.players[0]
+        else:
+            self.current_player = self.players[index + 1]
         if self.current_player == self.solution_giver:
             self.next_player()
         return self.current_player

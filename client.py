@@ -69,10 +69,9 @@ def main():
         if logged_in:
             try:
                 game = send(client, 'get')
-                is_solution_giver = nickname == game.nicknames[game.solution_giver]
+                is_solution_giver = nickname == game.solution_giver.nickname
                 gives_solution = is_solution_giver and not game.entered_solution
-                my_turn = nickname == game.nicknames[game.current_player]
-                # print(game)
+                my_turn = nickname == game.current_player.nickname
             except Exception as e:
                 print("Couldn't get game")
                 print(e)
@@ -138,10 +137,7 @@ def main():
             if not logged_in:
                 redraw_login_menu(host, nickname, entered_host, entered_name)
             else:
-                player_data = list(zip(game.nicknames, game.scores))
-                player_data.sort(key=lambda x: x[1], reverse=True)
-                redraw_game_screen(player_data, gives_solution, is_solution_giver,
-                                   my_turn, chosen_letter_index, game)
+                redraw_game_screen(game, gives_solution, is_solution_giver, my_turn, chosen_letter_index)
 
 
 def my_except_hook(exctype, value, tb):

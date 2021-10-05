@@ -52,22 +52,23 @@ def redraw_login_menu(host, name, entered_host, entered_name, login_state='OK'):
 
 
 # Current design can show up to 29 players
-def redraw_score_board(player_data, current):
+def redraw_score_board(game):
     y_text = 10
     y_line = 29
-    for i, (nickname, score) in enumerate(player_data):
+    # for i, (nickname, score) in enumerate(player_data):
+    for player in sorted(game.players, key=lambda x: x.score, reverse=True):
         score_str = ''
-        if score < 100:
+        if player.score < 100:
             score_str += ' '
-        if score < 10:
+        if player.score < 10:
             score_str += ' '
-        score_str += str(score)
+        score_str += str(player.score)
 
-        if i == current:
-            nick_text = font_bold.render(nickname, True, WHITE)
+        if player == game.current_player:
+            nick_text = font_bold.render(player.nickname, True, WHITE)
             score_text = font_bold.render(score_str, True, WHITE)
         else:
-            nick_text = font_normal.render(nickname, True, WHITE)
+            nick_text = font_normal.render(player.nickname, True, WHITE)
             score_text = font_normal.render(score_str, True, WHITE)
         win.blit(nick_text, (5, y_text))
         win.blit(score_text, (215, y_text))
@@ -188,7 +189,7 @@ def redraw_enter_solution(solution_text, underlines_text, start_font_x, start_fo
     win.blit(text, (start_x + 30, start_y + 90))
 
 
-def redraw_chosen_letter(chosen_letter_index, start_x, start_y, game):
+def redraw_chosen_letter(game, chosen_letter_index, start_x, start_y):
     first_line = 'ABCDEFGHIJKLM'
     second_line = 'NOPQRSTUVWXYZ'
     chosen_letter = game.remaining_letters[chosen_letter_index]
@@ -225,8 +226,8 @@ def redraw_remaining_letters(game, start_x, start_y):
     win.blit(text, (start_x + 30, start_y + 90))
 
 
-def redraw_guessing_player(chosen_letter_index, start_x, start_y, game):
-    redraw_chosen_letter(chosen_letter_index, start_x, start_y, game)
+def redraw_guessing_player(game, chosen_letter_index, start_x, start_y):
+    redraw_chosen_letter(game, chosen_letter_index, start_x, start_y)
     redraw_remaining_letters(game, start_x, start_y)
 
     message = 'Du bist dran, du Gust!'
@@ -264,7 +265,7 @@ def redraw_last_move(game):
 
 # Current design allows up to 22 symbols (including spaces and hyphens) with normal size
 # Up to 40 symbols with small but still readable font size (should not get smaller)
-def redraw_controls(gives_solution, is_solution_giver, my_turn, chosen_letter_index, game):
+def redraw_controls(game, gives_solution, is_solution_giver, my_turn, chosen_letter_index):
     start_x = 260
     start_y = 380
 
@@ -287,7 +288,7 @@ def redraw_controls(gives_solution, is_solution_giver, my_turn, chosen_letter_in
         if gives_solution:  # This player must enter solution
             redraw_enter_solution(solution_text, underlines_text, start_font_x, start_font_y, start_x, start_y)
         else:  # Another player must enter solution
-            message = '{} gibt Lösung ein.'.format(game.nicknames[game.solution_giver])
+            message = '{} gibt Lösung ein.'.format(game.solution_giver.nickname)
             text = font_big_bold.render(message, True, WHITE)
             win.blit(text, (start_x + 30, start_y + 60))
     else:  # One player is guessing
@@ -297,14 +298,14 @@ def redraw_controls(gives_solution, is_solution_giver, my_turn, chosen_letter_in
         win.blit(underlines_text, (start_font_x - 1, start_font_y))
 
         # Show missing letters if player gave the solution and is not playing alone
-        if is_solution_giver and len(game.nicknames) != 1:
+        if is_solution_giver and len(game.players) != 1:
             win.blit(missing_text, (start_font_x - 1, start_font_y))
 
         if my_turn:  # This player's turn to guess
-            redraw_guessing_player(chosen_letter_index, start_x, start_y, game)
+            redraw_guessing_player(game, chosen_letter_index, start_x, start_y)
         else:  # Another player's turn to guess
             redraw_remaining_letters(game, start_x, start_y)
-            message = '{} rät.'.format(game.nicknames[game.current_player])
+            message = '{} rät.'.format(game.current_player.nickname)
             text = font_big_bold.render(message, True, WHITE)
             win.blit(text, (start_x + 30, start_y + 150))
             pass
@@ -312,11 +313,11 @@ def redraw_controls(gives_solution, is_solution_giver, my_turn, chosen_letter_in
     redraw_hint_special_letters(start_y)
 
 
-def redraw_game_screen(player_data, gives_solution, is_solution_giver, my_turn, chosen_letter_index, game):
+def redraw_game_screen(game, gives_solution, is_solution_giver, my_turn, chosen_letter_index):
     win.fill(BACKGROUND_COLOR)
 
-    redraw_score_board(player_data, game.current_player)
+    redraw_score_board(game)
     redraw_hangman(game.failed_attempts)
-    redraw_controls(gives_solution, is_solution_giver, my_turn, chosen_letter_index, game)
+    redraw_controls(game, gives_solution, is_solution_giver, my_turn, chosen_letter_index)
 
     pygame.display.update()
