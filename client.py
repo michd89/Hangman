@@ -90,8 +90,8 @@ def main():
                         if not host:
                             host = 'localhost'
                 elif not entered_name:
-                    # TODO: die zeichenbegrenzung kann man bestimmt in die funktion auslagern
                     nickname = handle_line_typing(event, nickname, 21)
+                    # Confirm entry
                     if len(nickname) <= 21 and nickname[-1:] == '\r':
                         nickname = nickname[:-1]
                         if not nickname:
@@ -104,6 +104,7 @@ def main():
                     # Player's turn to enter a solution
                     if game.must_give_solution(my_player):
                         solution = handle_line_typing(event, solution, 41)
+                        # Confirm entry
                         if solution == ' ':  # No leading space
                             solution = ''
                         elif len(solution) >= 2 and solution[-2:] == '  ':  # No multiple trailing spaces
