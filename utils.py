@@ -13,8 +13,8 @@ def recv_msg(sock):
     return sock.recv(RECV_SIZE).decode(ENCODING)
 
 
-# TODO: Geht das auch mit send?
 def send_game(sock, game):
+    # Use sendall in case of larger amount of game data
     sock.sendall(pickle.dumps(game))
 
 
