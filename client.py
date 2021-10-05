@@ -41,10 +41,8 @@ def main():
     logged_in = False
     solution = ''
     chosen_letter_index = 0
-    my_turn = False  # For suprressing warning
     game = None  # For suppressing warning
-    gives_solution = False  # For suppressing warning
-    is_solution_giver = False  # For suppressing warning
+    my_player = None  # For suppressing warning
     run = True
     clock = pygame.time.Clock()
 
@@ -69,9 +67,9 @@ def main():
         if logged_in:
             try:
                 game = send(client, 'get')
-                is_solution_giver = nickname == game.solution_giver.nickname
-                gives_solution = is_solution_giver and not game.entered_solution
-                my_turn = nickname == game.current_player.nickname
+                for player in game.players:
+                    if player.nickname == nickname:
+                        my_player = player
             except Exception as e:
                 print("Couldn't get game")
                 print(e)
@@ -104,7 +102,7 @@ def main():
                 # Actual game screen
                 else:
                     # Player's turn to enter a solution
-                    if gives_solution:
+                    if game.must_give_solution(my_player):
                         solution = handle_line_typing(event, solution, 41)
                         if solution == ' ':  # No leading space
                             solution = ''
@@ -122,7 +120,7 @@ def main():
                             solution = solution[:-1]
                         send(client, 'solution ' + solution.upper())
                     # Player has to guess
-                    if my_turn and not gives_solution:
+                    if game.my_turn(my_player) and not game.must_give_solution(my_player):
                         pressed = pygame.key.get_pressed()
                         if pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]:
                             send(client, 'guess ' + game.remaining_letters[chosen_letter_index])
@@ -137,7 +135,7 @@ def main():
             if not logged_in:
                 redraw_login_menu(host, nickname, entered_host, entered_name)
             else:
-                redraw_game_screen(game, gives_solution, is_solution_giver, my_turn, chosen_letter_index)
+                redraw_game_screen(game, my_player, chosen_letter_index)
 
 
 def my_except_hook(exctype, value, tb):

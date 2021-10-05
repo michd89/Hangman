@@ -265,7 +265,7 @@ def redraw_last_move(game):
 
 # Current design allows up to 22 symbols (including spaces and hyphens) with normal size
 # Up to 40 symbols with small but still readable font size (should not get smaller)
-def redraw_controls(game, gives_solution, is_solution_giver, my_turn, chosen_letter_index):
+def redraw_controls(game, player, chosen_letter_index):
     start_x = 260
     start_y = 380
 
@@ -285,7 +285,7 @@ def redraw_controls(game, gives_solution, is_solution_giver, my_turn, chosen_let
 
     # User input
     if not game.entered_solution:  # One player is entering solution
-        if gives_solution:  # This player must enter solution
+        if game.must_give_solution(player):  # This player must enter solution
             redraw_enter_solution(solution_text, underlines_text, start_font_x, start_font_y, start_x, start_y)
         else:  # Another player must enter solution
             message = '{} gibt Lösung ein.'.format(game.solution_giver.nickname)
@@ -298,10 +298,10 @@ def redraw_controls(game, gives_solution, is_solution_giver, my_turn, chosen_let
         win.blit(underlines_text, (start_font_x - 1, start_font_y))
 
         # Show missing letters if player gave the solution and is not playing alone
-        if is_solution_giver and len(game.players) != 1:
+        if game.is_solution_giver(player) and len(game.players) != 1:
             win.blit(missing_text, (start_font_x - 1, start_font_y))
 
-        if my_turn:  # This player's turn to guess
+        if game.my_turn(player):  # This player's turn to guess
             redraw_guessing_player(game, chosen_letter_index, start_x, start_y)
         else:  # Another player's turn to guess
             redraw_remaining_letters(game, start_x, start_y)
@@ -313,11 +313,11 @@ def redraw_controls(game, gives_solution, is_solution_giver, my_turn, chosen_let
     redraw_hint_special_letters(start_y)
 
 
-def redraw_game_screen(game, gives_solution, is_solution_giver, my_turn, chosen_letter_index):
+def redraw_game_screen(game, my_player, chosen_letter_index):
     win.fill(BACKGROUND_COLOR)
 
     redraw_score_board(game)
     redraw_hangman(game.failed_attempts)
-    redraw_controls(game, gives_solution, is_solution_giver, my_turn, chosen_letter_index)
+    redraw_controls(game, my_player, chosen_letter_index)
 
     pygame.display.update()
