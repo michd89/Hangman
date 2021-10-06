@@ -105,4 +105,3 @@ class Hangman:
         self.failed_attempts = 0
         self.remaining_letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
         self.solution_giver = self.next_player()
-

@@ -55,7 +55,6 @@ def redraw_login_menu(host, name, entered_host, entered_name, login_state='OK'):
 def redraw_score_board(game):
     y_text = 10
     y_line = 29
-    # for i, (nickname, score) in enumerate(player_data):
     for player in sorted(game.players, key=lambda x: x.score, reverse=True):
         score_str = ''
         if player.score < 100:
@@ -308,7 +307,6 @@ def redraw_controls(game, player, chosen_letter_index):
             message = '{} rät.'.format(game.current_player.nickname)
             text = font_big_bold.render(message, True, WHITE)
             win.blit(text, (start_x + 30, start_y + 150))
-            pass
 
     redraw_hint_special_letters(start_y)
 
